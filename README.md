@@ -1,9 +1,9 @@
 # Conway's Game of Life - Example Code
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_conways-game-of-life&metric=coverage)](https://sonarcloud.io/summary/new_code?id=lgcmotta_conways-game-of-life)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_conways-game-of-life&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=lgcmotta_conways-game-of-life)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_conways-game-of-life&metric=bugs)](https://sonarcloud.io/summary/new_code?id=lgcmotta_conways-game-of-life)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_conways-game-of-life&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=lgcmotta_conways-game-of-life)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_GQS2025-1-A3-conways-game-of-life&metric=coverage)](https://sonarcloud.io/summary/new_code?id=lgcmotta_GQS2025-1-A3-conways-game-of-life)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_GQS2025-1-A3-conways-game-of-life&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=lgcmotta_GQS2025-1-A3-conways-game-of-life)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_GQS2025-1-A3-conways-game-of-life&metric=bugs)](https://sonarcloud.io/summary/new_code?id=lgcmotta_GQS2025-1-A3-conways-game-of-life)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=lgcmotta_GQS2025-1-A3-conways-game-of-life&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=lgcmotta_GQS2025-1-A3-conways-game-of-life)
 
 This repository holds a test propose for a job position. The challenge was to implement an API for [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
 
