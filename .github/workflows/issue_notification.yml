@@ -1,0 +1,39 @@
+name: Discord Issue Notifications
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+      - assigned
+      - closed
+
+jobs:
+  notify:
+    name: Send issue notifications to Discord
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notify on new or edited issue
+        if: ${{ github.event.action == 'opened' || github.event.action == 'edited' }}
+        uses: mitz-it/discord-message-action@v1
+        with:
+          token: ${{ secrets.DISCORD_BOT_TOKEN }}
+          channel-id: ${{ secrets.DISCORD_ISSUE_CHANNEL_ID }}
+          message-content: ":bell: Issue #${{ github.event.issue.number }} ${{ github.event.action }} by @${{ github.event.issue.user.login }}: ${{ github.event.issue.html_url }}"
+
+      - name: Notify on issue assignment
+        if: ${{ github.event.action == 'assigned' }}
+        uses: mitz-it/discord-message-action@v1
+        with:
+          token: ${{ secrets.DISCORD_BOT_TOKEN }}
+          channel-id: ${{ secrets.DISCORD_ISSUE_CHANNEL_ID }}
+          message-content: ":bust_in_silhouette: Issue #${{ github.event.issue.number }} assigned to @${{ github.event.assignee.login }}: ${{ github.event.issue.html_url }}"
+
+      - name: Notify on issue closure
+        if: ${{ github.event.action == 'closed' }}
+        uses: mitz-it/discord-message-action@v1
+        with:
+          token: ${{ secrets.DISCORD_BOT_TOKEN }}
+          channel-id: ${{ secrets.DISCORD_ISSUE_CHANNEL_ID }}
+          message-content: ":white_check_mark: Issue #${{ github.event.issue.number }} closed: ${{ github.event.issue.html_url }}"
