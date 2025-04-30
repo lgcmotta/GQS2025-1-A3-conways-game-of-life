@@ -7,10 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		README.md = README.md
-		.github\pull_request_template.md = .github\pull_request_template.md
 		docker-compose.yml = docker-compose.yml
-		.github\workflows\sonar_push.yml = .github\workflows\sonar_push.yml
-		.github\workflows\sonar_pull_request.yml = .github\workflows\sonar_pull_request.yml
 		otel-collector-config.yml = otel-collector-config.yml
 		.dockerignore = .dockerignore
 		prometheus.yml = prometheus.yml
@@ -33,6 +30,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.GameOfLife.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.GameOfLife.Infrastructure", "src\Conways.GameOfLife.Infrastructure\Conways.GameOfLife.Infrastructure.csproj", "{B3ABB3FE-B01C-4B7E-B12B-62B8505FB9D2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{4D6B81F7-ACAF-484F-8D65-C291E5867C85}"
+	ProjectSection(SolutionItems) = preProject
+		.github\pull_request_template.md = .github\pull_request_template.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{D62AFEBC-7DC7-4710-A902-EF2FA4DF3969}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\sonar_push.yml = .github\workflows\sonar_push.yml
+		.github\workflows\sonar_pull_request.yml = .github\workflows\sonar_pull_request.yml
+		.github\workflows\issue_notification.yml = .github\workflows\issue_notification.yml
+		.github\workflows\pull_request.yml = .github\workflows\pull_request.yml
+		.github\workflows\push_image.yml = .github\workflows\push_image.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{818AE0FC-8250-443E-9BA0-F125C3334CE2}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\simple-issue-task.md = .github\ISSUE_TEMPLATE\simple-issue-task.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +64,9 @@ Global
 		{C28745E5-796A-41A1-8BCF-9F11212E4C17} = {229E1888-0DAC-4F7C-A9D6-9AF3F94C293D}
 		{CE05B38E-EA36-445D-97B8-BC24B87C953E} = {229E1888-0DAC-4F7C-A9D6-9AF3F94C293D}
 		{B3ABB3FE-B01C-4B7E-B12B-62B8505FB9D2} = {229E1888-0DAC-4F7C-A9D6-9AF3F94C293D}
+		{4D6B81F7-ACAF-484F-8D65-C291E5867C85} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
+		{D62AFEBC-7DC7-4710-A902-EF2FA4DF3969} = {4D6B81F7-ACAF-484F-8D65-C291E5867C85}
+		{818AE0FC-8250-443E-9BA0-F125C3334CE2} = {4D6B81F7-ACAF-484F-8D65-C291E5867C85}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C419FB97-4442-4D28-A62D-16F25FFC1220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

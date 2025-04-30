@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Conways.GameOfLife.API/Conways.GameOfLife.API.csproj", "src/Conways.GameOfLife.API/"]
-COPY ["src/Conways.GameOfLife.Infrastructure.PostgresSQL/Conways.GameOfLife.Infrastructure.PostgresSQL.csproj", "src/Conways.GameOfLife.Infrastructure.PostgresSQL/"]
+COPY ["src/Conways.GameOfLife.Infrastructure.PostgreSQL/Conways.GameOfLife.Infrastructure.PostgreSQL.csproj", "src/Conways.GameOfLife.Infrastructure.PostgreSQL/"]
 COPY ["src/Conways.GameOfLife.Domain/Conways.GameOfLife.Domain.csproj", "src/Conways.GameOfLife.Domain/"]
 COPY ["src/Conways.GameOfLife.Infrastructure/Conways.GameOfLife.Infrastructure.csproj", "src/Conways.GameOfLife.Infrastructure/"]
 RUN dotnet restore "src/Conways.GameOfLife.API/Conways.GameOfLife.API.csproj"
