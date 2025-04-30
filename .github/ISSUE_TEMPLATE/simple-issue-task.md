@@ -1,7 +1,7 @@
 ---
 name: Simple Issue Task
 about: A simple issue template to assign tasks to the A3 project
-title: 'feat: something needs to be done'
+title: Something needs to be done
 labels: ''
 assignees: ''
 
