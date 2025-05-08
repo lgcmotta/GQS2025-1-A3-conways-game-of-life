@@ -75,7 +75,7 @@ jobs:
         env:
           COVERAGE_REPORTS_DIR: ${{ github.workspace }}/reports
         run: |
-          dotnet dotCover cover-dotnet \
+          dotCover cover-dotnet \
             --ReportType=HTML \
             --Output="$COVERAGE_REPORTS_DIR/coverage.dotcover.html" \
             --Filters="-:module=*Tests;+:class=Conways.GameOfLife.*" -- \
