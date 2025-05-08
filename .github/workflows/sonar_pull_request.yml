@@ -1,6 +1,6 @@
 name: Conway's Game of Life - Pull Request
 
-on: 
+on:
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -23,7 +23,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       - name: Install Sonar Scanner
         shell: bash
@@ -32,7 +32,7 @@ jobs:
       - name: Install dotCover
         shell: bash
         env:
-          DOT_COVER_VERSION: 2024.2.3
+          DOT_COVER_VERSION: 2025.1.2
         run: |
           dotnet tool install --global JetBrains.dotCover.CommandLineTools --version $DOT_COVER_VERSION
 
