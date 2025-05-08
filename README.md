@@ -26,7 +26,7 @@ Another decision was to work with Vertical Slice Architecture, since it's a smal
 
 ## Environment :whale:
 
-To work with this project you will need Docker (with Docker Compose), .NET 8 SDK and the IDE of your choice. I'm going with JetBrains Rider.
+To work with this project you will need Docker (with Docker Compose), .NET 9 SDK and the IDE of your choice. I'm going with JetBrains Rider.
 
 The `docker-compose.yml` contains the following containers: PostgreSQL, Jaeger, Loki, Grafana, Prometheus and OTEL Collector (contrib).
 
