@@ -58,7 +58,7 @@ jobs:
           /d:sonar.token="$SONAR_TOKEN" \
           /d:sonar.host.url="$SONAR_HOST_URL" \
           /d:sonar.qualitygate.wait=$QUALITY_GATE_WAIT \
-          /d:sonar.cs.dotcover.reportsPaths="$COVERAGE_REPORTS_DIR/*.dotcover.html" \
+          /d:sonar.cs.vscoveragexml.reportsPaths="**TestResults/coverage.xml" \
           /d:sonar.scanner.scanAll=false \
           /d:sonar.exclusions="$COVERAGE_REPORTS_DIR/**,**/*.css,**/*.html,**/*.js,**/Program.cs,**/Diagnostics/*,**/Extensions/*,**/Migrations/*,**/Interceptors/*,**/Factories/*,**/BoardDesignTimeDbContextFactory.cs"
 
@@ -75,17 +75,7 @@ jobs:
         env:
           COVERAGE_REPORTS_DIR: ${{ github.workspace }}/reports
         run: |
-          dotCover cover-dotnet \
-            --ReportType=HTML \
-            --Output="$COVERAGE_REPORTS_DIR/coverage.dotcover.html" \
-            --Filters="-:module=*Tests;+:class=Conways.GameOfLife.*" -- \
-          test \
-            --no-restore \
-            --no-build \
-            ConwaysGameOfLife.sln \
-            --logger "GitHubActions;report-warnings=false" \
-            --configuration Release \
-            --verbosity m
+          dotnet test -- --coverage --coverage-output-format xml --coverage-output coverage.xml
 
       - name: End SonarCloud Analysis
         shell: bash
