@@ -1,6 +1,6 @@
 namespace Conways.GameOfLife.IntegrationTests.Features.CreateBoard;
 
-public class CreateBoardTests : IClassFixture<ConwaysGameOfLifeWebApplicationFactory>
+public class CreateBoardTests
 {
     private readonly ConwaysGameOfLifeWebApplicationFactory _factory;
 
@@ -8,7 +8,7 @@ public class CreateBoardTests : IClassFixture<ConwaysGameOfLifeWebApplicationFac
     {
         _factory = factory;
     }
-    
+
     [Fact]
     public async Task CreateBoard_WhenBoardIsValidSize_ShouldSaveAndEncodeBoardId()
     {
@@ -23,9 +23,9 @@ public class CreateBoardTests : IClassFixture<ConwaysGameOfLifeWebApplicationFac
         using var scope = _factory.Services.CreateScope();
 
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
+
         // Act
-        var response = await mediator.Send(new CreateBoardCommand(firstGeneration));
+        var response = await mediator.Send(new CreateBoardCommand(firstGeneration), TestContext.Current.CancellationToken);
 
         // Assert
         response.BoardId.Should().NotBeEmpty();
@@ -42,13 +42,13 @@ public class CreateBoardTests : IClassFixture<ConwaysGameOfLifeWebApplicationFac
             [true, true, false],
             [false, false]
         };
-        
+
         using var scope = _factory.Services.CreateScope();
 
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
+
         // Act
-        async Task SendCommand() => await mediator.Send(new CreateBoardCommand(firstGeneration));
+        async Task SendCommand() => await mediator.Send(new CreateBoardCommand(firstGeneration), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(SendCommand);
@@ -63,20 +63,20 @@ public class CreateBoardTests : IClassFixture<ConwaysGameOfLifeWebApplicationFac
             AllowAutoRedirect = false,
             BaseAddress = _factory.Server.BaseAddress
         });
-        
+
         var firstGeneration = new bool[][]
         {
             [false, true, false],
             [true, true, false],
             [false, false, false]
         };
-        
+
         var jsonString = JsonSerializer.Serialize(new CreateBoardCommand(firstGeneration));
-        
+
         // Act
-        var response = await client.PostAsync("/api/v1/boards", new StringContent(jsonString, Encoding.UTF8, "application/json"));
-        
-        var body = await response.Content.ReadFromJsonAsync<CreateBoardResponse>();
+        var response = await client.PostAsync("/api/v1/boards", new StringContent(jsonString, Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken);
+
+        var body = await response.Content.ReadFromJsonAsync<CreateBoardResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();
