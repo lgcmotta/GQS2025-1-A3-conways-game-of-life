@@ -50,7 +50,7 @@ jobs:
           /k:"$SONAR_PROJECT_KEY" \
           /o:"$SONAR_ORGANIZATION" \
           /d:sonar.branch.name="$BRANCH_NAME" \
-          /d:sonar.projectBaseDir=./src/** \
+          /d:sonar.projectBaseDir="src" \
           /d:sonar.token="$SONAR_TOKEN" \
           /d:sonar.host.url="$SONAR_HOST_URL" \
           /d:sonar.qualitygate.wait=$QUALITY_GATE_WAIT \

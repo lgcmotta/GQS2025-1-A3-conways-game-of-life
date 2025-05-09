@@ -51,7 +51,7 @@ jobs:
           dotnet-sonarscanner begin \
           /k:"$SONAR_PROJECT_KEY" \
           /o:"$SONAR_ORGANIZATION" \
-          /d:sonar.projectBaseDir=./src/** \
+          /d:sonar.projectBaseDir="src" \
           /d:sonar.pullrequest.key="$PR_NUMBER" \
           /d:sonar.pullrequest.branch="$PR_HEAD" \
           /d:sonar.pullrequest.base="$PR_BASE" \
