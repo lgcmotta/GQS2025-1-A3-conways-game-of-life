@@ -29,13 +29,6 @@ jobs:
         shell: bash
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Install dotCover
-        shell: bash
-        env:
-          DOT_COVER_VERSION: 2025.1.2
-        run: |
-          dotnet tool install --global JetBrains.dotCover.CommandLineTools --version $DOT_COVER_VERSION
-
       - name: Begin SonarCloud Analysis
         shell: bash
         env:
@@ -51,13 +44,13 @@ jobs:
           dotnet-sonarscanner begin \
           /k:"$SONAR_PROJECT_KEY" \
           /o:"$SONAR_ORGANIZATION" \
-          /d:sonar.projectBaseDir="src" \
           /d:sonar.pullrequest.key="$PR_NUMBER" \
           /d:sonar.pullrequest.branch="$PR_HEAD" \
           /d:sonar.pullrequest.base="$PR_BASE" \
           /d:sonar.token="$SONAR_TOKEN" \
           /d:sonar.host.url="$SONAR_HOST_URL" \
           /d:sonar.qualitygate.wait=$QUALITY_GATE_WAIT \
+          /d:sonar.sources="src" \
           /d:sonar.cs.vscoveragexml.reportsPaths="**TestResults/coverage.xml" \
           /d:sonar.scanner.scanAll=false \
           /d:sonar.exclusions="$COVERAGE_REPORTS_DIR/**,**/*.css,**/*.html,**/*.js,**/Program.cs,**/Diagnostics/*,**/Extensions/*,**/Migrations/*,**/Interceptors/*,**/Factories/*,**/BoardDesignTimeDbContextFactory.cs"
