@@ -1,4 +1,16 @@
 root = true
+[*]
+indent_style = space
+charset = utf-8
+end_of_line = lf
+insert_final_newline = false
+trim_trailing_whitespace = true
+
+[*.{config,csproj,nuspec,props,resx,ruleset,targets,vsct,vsixmanifest,xaml,xml,vsmanproj,swixproj}]
+indent_size = 2
+
+[*.json]
+indent_size = 2
 
 [**/BoardTests.cs]
 resharper_use_collection_expression_highlighting=none
