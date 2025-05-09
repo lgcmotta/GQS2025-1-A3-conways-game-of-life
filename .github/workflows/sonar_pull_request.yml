@@ -46,7 +46,6 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_BASE: ${{ github.event.pull_request.base.ref }}
           PR_HEAD: ${{ github.event.pull_request.head.ref }}
-          COVERAGE_REPORTS_DIR: ${{ github.workspace }}/reports
           QUALITY_GATE_WAIT: true
         run: |
           dotnet-sonarscanner begin \
@@ -72,10 +71,13 @@ jobs:
 
       - name: .NET Test
         shell: bash
-        env:
-          COVERAGE_REPORTS_DIR: ${{ github.workspace }}/reports
         run: |
-          dotnet test -- --coverage --coverage-output-format xml --coverage-output coverage.xml
+          dotnet test --no-build \
+          --no-restore \
+          --configuration Release -- \
+          --coverage \
+          --coverage-output-format xml \
+          --coverage-output coverage.xml
 
       - name: End SonarCloud Analysis
         shell: bash
