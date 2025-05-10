@@ -8,7 +8,7 @@ using Conways.GameOfLife.API.Features.NextGenerations;
 using Conways.GameOfLife.API.Middlewares;
 using Conways.GameOfLife.Infrastructure.Extensions;
 using Conways.GameOfLife.Infrastructure.PostgreSQL.Extensions;
-using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,20 +40,24 @@ builder.Services
     })
     .EnableApiVersionBinding();
 
-builder.Services.AddEndpointsApiExplorer()
-    .AddSwaggerGen(options =>
-    {
-        options.SwaggerDoc("v1",
-            new OpenApiInfo { Title = "Conway's Game Of Life API", Version = "v1" });
-    })
-    .AddOpenTelemetryObservability(builder.Configuration);
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddOpenApi();
+
+builder.Services.AddOpenTelemetryObservability(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+
+var documentationEnabled = app.Configuration.GetValue<bool>("ApiDocumentation:Enabled");
+
+if (documentationEnabled)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    
+    app.MapOpenApi();
+    
+    
+    app.MapScalarApiReference();
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -70,8 +74,6 @@ api.MapCreateBoardEndpoint(v1)
     .MapNextGenerationEndpoint(v1)
     .MapNextGenerationsEndpoint(v1)
     .MapFinalGenerationEndpoint(v1);
-
-app.MapSwagger();
 
 await app.Services
     .MigrateDatabaseAsync()
