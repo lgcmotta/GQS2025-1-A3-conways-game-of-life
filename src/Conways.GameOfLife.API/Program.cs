@@ -40,25 +40,14 @@ builder.Services
     })
     .EnableApiVersionBinding();
 
-builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddOpenApi();
 
 builder.Services.AddOpenTelemetryObservability(builder.Configuration);
 
 var app = builder.Build();
 
-
-var documentationEnabled = app.Configuration.GetValue<bool>("ApiDocumentation:Enabled");
-
-if (documentationEnabled)
-{
-    
-    app.MapOpenApi();
-    
-    
-    app.MapScalarApiReference();
-}
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
