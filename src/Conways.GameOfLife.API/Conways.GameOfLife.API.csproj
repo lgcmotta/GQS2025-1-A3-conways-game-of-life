@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>b6f29371-e8b7-4d75-a368-06b594b78b51</UserSecretsId>
+        <OpenApiGenerateDocumentsOnBuild>false</OpenApiGenerateDocumentsOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,7 +23,8 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Swashbuckle.AspNetCore" />
+      <PackageReference Include="Scalar.AspNetCore" />
+      <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" />
     </ItemGroup>
 
     <ItemGroup>
