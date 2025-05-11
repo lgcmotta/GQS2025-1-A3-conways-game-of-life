@@ -16,7 +16,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk"/>
-    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage"/>
     <PackageReference Include="xunit.v3"/>
     <PackageReference Include="xunit.runner.visualstudio">
       <PrivateAssets>all</PrivateAssets>
@@ -25,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit"/>
+    <ProjectReference Include="..\..\src\Conways.GameOfLife.Domain\Conways.GameOfLife.Domain.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Conways.GameOfLife.Domain\Conways.GameOfLife.Domain.csproj"/>
+    <Using Include="Xunit"/>
   </ItemGroup>
 
 </Project>
