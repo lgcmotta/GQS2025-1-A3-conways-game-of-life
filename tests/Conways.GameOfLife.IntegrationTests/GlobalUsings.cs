@@ -4,7 +4,6 @@ global using Conways.GameOfLife.API.Features.FinalGeneration;
 global using Conways.GameOfLife.API.Features.NextGeneration;
 global using Conways.GameOfLife.API.Features.NextGenerations;
 global using Conways.GameOfLife.API.Models;
-global using Conways.GameOfLife.API;
 global using Conways.GameOfLife.Domain.Exceptions;
 global using Conways.GameOfLife.Domain;
 global using Conways.GameOfLife.Infrastructure.PostgreSQL.Interceptors;

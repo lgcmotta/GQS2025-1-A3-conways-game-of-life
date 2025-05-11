@@ -1,18 +1,15 @@
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
+[assembly: AssemblyFixture(typeof(ConwaysGameOfLifeWebApplicationFactory))]
 
 namespace Conways.GameOfLife.IntegrationTests.Factories;
 
 public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _container = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
-        .WithPassword("p4ssw0rd")
+        .WithImage("mirror.gcr.io/postgres")
         .WithPortBinding(5432, true)
         .WithDatabase("ConwaysGameOfLife")
         .Build();
-    
+
     private readonly Dictionary<string, string?> _envs = new()
     {
         ["SERVICE_NAME"] = "conways-game-of-life-api",
@@ -23,27 +20,21 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
         ["SEQ_ENDPOINT"] = "http://localhost:4317",
         ["SEQ_API_KEY"] = Guid.NewGuid().ToString()
     };
-    
-    public async Task InitializeAsync()
+
+    public async ValueTask InitializeAsync()
     {
-        await InitializePostgresContainerAsync();
-    
+        await _container.StartAsync(TestContext.Current.CancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+
         using var scope = Services.CreateScope();
-        
+
         var context = scope.ServiceProvider.GetRequiredService<BoardDbContext>();
-        
-        await context.Database.MigrateAsync();
-    }
-    
-    public new async Task DisposeAsync()
-    {
-        await base.DisposeAsync();
+
+        await context.Database.MigrateAsync(TestContext.Current.CancellationToken);
     }
 
-    private async Task InitializePostgresContainerAsync(CancellationToken cancellationToken = default)
-    {
-        await _container.StartAsync(cancellationToken);
-    }
+#pragma warning disable CA1816
+    public new async ValueTask DisposeAsync() => await base.DisposeAsync();
+#pragma warning restore CA1816
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -51,11 +42,11 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
         {
             Environment.SetEnvironmentVariable(key, value);
         }
-        
+
         builder.ConfigureServices(services =>
         {
             RemoveDbContextOptions<BoardDbContext>(services);
-            
+
             RemoveDbContextOptions<BoardDbContextReadOnly>(services);
 
             var connectionString = _container.GetConnectionString();
@@ -71,7 +62,7 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
 
                 optionsBuilder.AddInterceptors(interceptors);
             });
-            
+
             services.AddDbContext<BoardDbContextReadOnly>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(connectionString, pgsql =>

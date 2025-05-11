@@ -1,6 +1,6 @@
 namespace Conways.GameOfLife.IntegrationTests.Features.NextGeneration;
 
-public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicationFactory>
+public class NextGenerationTests
 {
     private readonly ConwaysGameOfLifeWebApplicationFactory _factory;
 
@@ -12,10 +12,10 @@ public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplication
     private async Task<string> SeedBoard(bool[,] firstGeneration)
     {
         using var scope = _factory.Services.CreateScope();
-        
+
         var context = scope.ServiceProvider.GetRequiredService<BoardDbContext>();
         var hashIds = scope.ServiceProvider.GetRequiredService<IHashids>();
-            
+
         var board = new Board(firstGeneration);
 
         await context.AddAsync(board);
@@ -24,47 +24,47 @@ public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplication
 
         return  hashIds.EncodeLong(board.Id);
     }
-    
+
     public static TheoryData<string?> GetBoardIdsForValidationFailedException()
     {
-        return new TheoryData<string?>
-        {
-            null,
+        return
+        [
+            null!,
             string.Empty
-        };
+        ];
     }
-    
+
     [Theory]
     [MemberData(nameof(GetBoardIdsForValidationFailedException))]
     public async Task NextGeneration_WhenBoardIdIsNullOrEmpty_ShouldThrowValidationFailedException(string? boardId)
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
-        
+
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
+
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId!)); 
+        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId!));
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
     }
-    
+
     [Fact]
     public async Task NextGeneration_WhenBoardDoesNotExists_ShouldThrowBoardNotFoundException()
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
-        
+
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         var hashIds = scope.ServiceProvider.GetRequiredService<IHashids>();
 
         var boardId = hashIds.EncodeLong(1234);
-        
+
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId)); 
-        
+        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId));
+
         // Assert
         await Assert.ThrowsAsync<BoardNotFoundException>(RequestQuery);
     }
@@ -79,7 +79,7 @@ public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplication
             { false, true, false },
             { false, false, false }
         };
-        
+
         var expectedNextState = new bool[][]
         {
             [true, true, false],
@@ -88,18 +88,18 @@ public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplication
         };
 
         var boardId = await SeedBoard(firstGeneration);
-        
+
         using var scope = _factory.Services.CreateScope();
-        
+
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
+
         // Act
-        var response = await mediator.Send(new NextGenerationQuery(boardId));
+        var response = await mediator.Send(new NextGenerationQuery(boardId), TestContext.Current.CancellationToken);
 
         // Assert
         response.Generation.Should().BeEquivalentTo(expectedNextState);
     }
-    
+
     [Fact]
     public async Task NextGeneration_WhenRequestingUsingAPI_ShouldRespondWithExpectedNextGeneration()
     {
@@ -110,7 +110,7 @@ public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplication
             { false, true, false },
             { false, false, false }
         };
-        
+
         var expectedNextState = new bool[][]
         {
             [true, true, false],
@@ -125,17 +125,17 @@ public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplication
             AllowAutoRedirect = false,
             BaseAddress = _factory.Server.BaseAddress
         });
-        
-        // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next");
 
-        var body = await response.Content.ReadFromJsonAsync<NextGenerationResponse>();
+        // Act
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next", TestContext.Current.CancellationToken);
+
+        var body = await response.Content.ReadFromJsonAsync<NextGenerationResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();
         body!.Generation.Should().BeEquivalentTo(expectedNextState);
     }
-    
+
     [Fact]
     public async Task NextGeneration_WhenBoardDoesNotExistsRequestingUsingAPI_ShouldRespondNotFound()
     {
@@ -151,15 +151,15 @@ public class NextGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplication
         var hashIds = scope.ServiceProvider.GetRequiredService<IHashids>();
 
         var boardId = hashIds.EncodeLong(1234);
-        
-        // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next");
 
-        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        // Act
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next", TestContext.Current.CancellationToken);
+
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         body.Should().NotBeNull();
         body!.Errors.Should().Contain($"Board with Id '{boardId}' was not found");
     }
-}   
+}

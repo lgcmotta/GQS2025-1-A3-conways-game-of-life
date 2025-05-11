@@ -1,6 +1,6 @@
 namespace Conways.GameOfLife.IntegrationTests.Features.FinalGeneration;
 
-public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicationFactory>
+public class FinalGenerationTests
 {
     private readonly ConwaysGameOfLifeWebApplicationFactory _factory;
 
@@ -8,14 +8,14 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
     {
         _factory = factory;
     }
-    
+
     private async Task<string> SeedBoard(bool[,] firstGeneration)
     {
         using var scope = _factory.Services.CreateScope();
-        
+
         var context = scope.ServiceProvider.GetRequiredService<BoardDbContext>();
         var hashIds = scope.ServiceProvider.GetRequiredService<IHashids>();
-            
+
         var board = new Board(firstGeneration);
 
         await context.AddAsync(board);
@@ -35,17 +35,17 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             { "JzjO0ZW6D83", -1 }
         };
     }
-    
+
     [Theory]
     [MemberData(nameof(GetFinalGenerationQueryInputsForValidationFailedException))]
     public async Task FinalGeneration_WhenBoardIdIsNullOrEmptyOrMaxAttemptsIsNegativeOrZero_ShouldThrowValidationFailedException(string? boardId, int maxAttempts)
     {
         using var scope = _factory.Services.CreateScope();
-        
+
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
+
         // Act
-        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId!, maxAttempts)); 
+        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId!, maxAttempts));
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
@@ -57,16 +57,16 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
         // Arrange
         const int maxAttempts = 3;
         using var scope = _factory.Services.CreateScope();
-        
+
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         var hashIds = scope.ServiceProvider.GetRequiredService<IHashids>();
 
         var boardId = hashIds.EncodeLong(1234);
-        
+
         // Act
-        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts)); 
-        
+        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts));
+
         // Assert
         await Assert.ThrowsAsync<BoardNotFoundException>(RequestQuery);
     }
@@ -85,16 +85,16 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             { false, false, false, true, true, false },
             { false, false, false, false, false, false }
         };
-        
+
         var boardId = await SeedBoard(firstGeneration);
-        
+
         using var scope = _factory.Services.CreateScope();
-        
+
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
+
         // Act
         async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts));
-        
+
         // Assert
         await Assert.ThrowsAsync<UnstableBoardException>(RequestQuery);
     }
@@ -116,23 +116,23 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
 
         var expectedFinalGeneration = new bool[][]
         {
-            [false, false, false, false, false, false], 
+            [false, false, false, false, false, false],
             [false, true, true, false, false, false],
-            [true, false, false, true, false, false], 
+            [true, false, false, true, false, false],
             [false, true, true, false, false, false],
-            [false, false, false, false, false, false], 
+            [false, false, false, false, false, false],
             [false, false, false, false, false, false]
         };
-        
+
         var boardId = await SeedBoard(firstGeneration);
-        
+
         using var scope = _factory.Services.CreateScope();
-        
+
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        
+
         // Act
-        var response = await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts));
-        
+        var response = await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts), TestContext.Current.CancellationToken);
+
         // Assert
         response.Should().NotBeNull();
         response.Stable.Should().BeTrue();
@@ -144,7 +144,7 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
     {
         // Arrange
         const int maxAttempts = 5;
-        
+
         var firstGeneration = new[,]
         {
             { false, false, false, false, false, false },
@@ -154,17 +154,17 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             { false, false, false, true, true, false },
             { false, false, false, false, false, false }
         };
-        
+
         var expectedFinalGeneration = new bool[][]
         {
-            [false, false, false, false, false, false], 
+            [false, false, false, false, false, false],
             [false, true, true, false, false, false],
-            [true, false, false, true, false, false], 
+            [true, false, false, true, false, false],
             [false, true, true, false, false, false],
-            [false, false, false, false, false, false], 
+            [false, false, false, false, false, false],
             [false, false, false, false, false, false]
         };
-        
+
         var boardId = await SeedBoard(firstGeneration);
 
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
@@ -172,11 +172,11 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             AllowAutoRedirect = false,
             BaseAddress = _factory.Server.BaseAddress
         });
-        
-        // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final?maxAttempts={maxAttempts}");
 
-        var body = await response.Content.ReadFromJsonAsync<FinalGenerationResponse>();
+        // Act
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final?maxAttempts={maxAttempts}", TestContext.Current.CancellationToken);
+
+        var body = await response.Content.ReadFromJsonAsync<FinalGenerationResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();
@@ -197,17 +197,17 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             { false, false, false, true, true, false },
             { false, false, false, false, false, false }
         };
-        
+
         var expectedFinalGeneration = new bool[][]
         {
-            [false, false, false, false, false, false], 
+            [false, false, false, false, false, false],
             [false, true, true, false, false, false],
-            [true, false, false, true, false, false], 
+            [true, false, false, true, false, false],
             [false, true, true, false, false, false],
-            [false, false, false, false, false, false], 
+            [false, false, false, false, false, false],
             [false, false, false, false, false, false]
         };
-        
+
         var boardId = await SeedBoard(firstGeneration);
 
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
@@ -215,11 +215,11 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             AllowAutoRedirect = false,
             BaseAddress = _factory.Server.BaseAddress
         });
-        
-        // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final");
 
-        var body = await response.Content.ReadFromJsonAsync<FinalGenerationResponse>();
+        // Act
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final", TestContext.Current.CancellationToken);
+
+        var body = await response.Content.ReadFromJsonAsync<FinalGenerationResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();
@@ -232,7 +232,7 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
     {
         // Arrange
         const int maxAttempts = 2;
-        
+
         var firstGeneration = new[,]
         {
             { false, false, false, false, false, false },
@@ -242,7 +242,7 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             { false, false, false, true, true, false },
             { false, false, false, false, false, false }
         };
-        
+
         var boardId = await SeedBoard(firstGeneration);
 
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
@@ -250,11 +250,11 @@ public class FinalGenerationTests : IClassFixture<ConwaysGameOfLifeWebApplicatio
             AllowAutoRedirect = false,
             BaseAddress = _factory.Server.BaseAddress
         });
-        
-        // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final?maxAttempts={maxAttempts}");
 
-        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        // Act
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final?maxAttempts={maxAttempts}", TestContext.Current.CancellationToken);
+
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
