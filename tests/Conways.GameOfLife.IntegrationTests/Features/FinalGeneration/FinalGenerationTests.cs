@@ -45,7 +45,7 @@ public class FinalGenerationTests
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId!, maxAttempts));
+        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId!, maxAttempts), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
@@ -65,7 +65,7 @@ public class FinalGenerationTests
         var boardId = hashIds.EncodeLong(1234);
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts));
+        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<BoardNotFoundException>(RequestQuery);
@@ -93,7 +93,7 @@ public class FinalGenerationTests
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts));
+        async Task RequestQuery() => await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<UnstableBoardException>(RequestQuery);
@@ -180,7 +180,7 @@ public class FinalGenerationTests
 
         // Assert
         body.Should().NotBeNull();
-        body!.Stable.Should().BeTrue();
+        body.Stable.Should().BeTrue();
         body.FinalGeneration.Should().BeEquivalentTo(expectedFinalGeneration);
     }
 
@@ -223,7 +223,7 @@ public class FinalGenerationTests
 
         // Assert
         body.Should().NotBeNull();
-        body!.Stable.Should().BeTrue();
+        body.Stable.Should().BeTrue();
         body.FinalGeneration.Should().BeEquivalentTo(expectedFinalGeneration);
     }
 
@@ -259,6 +259,6 @@ public class FinalGenerationTests
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
         body.Should().NotBeNull();
-        body!.Errors.Should().Contain($"Board with id '{boardId}' failed to reach stable state after {maxAttempts} attempts");
+        body.Errors.Should().Contain($"Board with id '{boardId}' failed to reach stable state after {maxAttempts} attempts");
     }
 }
