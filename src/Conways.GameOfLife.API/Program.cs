@@ -17,6 +17,7 @@ builder.AddServiceDefaults();
 var v1 = new ApiVersion(1, minorVersion: 0);
 
 builder.Services
+    .AddPostgreHealthCheck(builder.Configuration)
     .AddBoardDbContexts(builder.Configuration)
     .AddHashIds(builder.Configuration)
     .AddCQRS()
@@ -38,8 +39,6 @@ builder.Services
     .EnableApiVersionBinding();
 
 builder.Services.AddOpenApi();
-
-// builder.Services.AddOpenTelemetryObservability(builder.Configuration);
 
 var app = builder.Build();
 

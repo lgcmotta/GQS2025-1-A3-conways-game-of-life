@@ -1,11 +1,15 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgre = builder.AddPostgres("Postgres")
+var postgre = builder.AddPostgres("postgres")
+    .WithDataVolume("postgres_data")
+    .WithLifetime(ContainerLifetime.Persistent)
     .WithPgAdmin()
-    .AddDatabase("ConwaysGameOfLife");
+    .AddDatabase("GameOfLife");
 
-builder.AddProject<Projects.Conways_GameOfLife_API>("gameoflife-api")
+builder.AddProject<Projects.Conways_GameOfLife_API>("conways-gameoflife-api")
     .WithReference(postgre)
-    .WaitFor(postgre);
+    .WaitFor(postgre)
+    .WithHttpHealthCheck("/healthz/ready")
+    .WithHttpHealthCheck("/healthz/live");
 
 await builder.Build().RunAsync();

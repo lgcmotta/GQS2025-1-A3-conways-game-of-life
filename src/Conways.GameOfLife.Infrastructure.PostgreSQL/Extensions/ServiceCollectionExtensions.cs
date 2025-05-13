@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBoardDbContexts(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("ConwaysGameOfLife");
+        var connectionString = configuration.GetConnectionString(BoardDbContext.DatabaseName);
 
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 

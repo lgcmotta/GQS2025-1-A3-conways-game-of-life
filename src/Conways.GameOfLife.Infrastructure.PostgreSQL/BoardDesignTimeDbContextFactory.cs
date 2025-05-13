@@ -13,7 +13,7 @@ public class BoardDesignTimeDbContextFactory : IDesignTimeDbContextFactory<Board
     {
         var configuration = ConfigurationFactory.CreateConfiguration();
 
-        var connectionString = configuration.GetConnectionString("ConwaysGameOfLife");
+        var connectionString = configuration.GetConnectionString(BoardDbContext.DatabaseName);
 
         if (string.IsNullOrWhiteSpace(connectionString))
         {
