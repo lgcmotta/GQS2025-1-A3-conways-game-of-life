@@ -4,14 +4,16 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <UserSecretsId>cc35956b-55e5-4bb3-be19-f87562c42c4b</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Aspire.Hosting.AppHost" />
+        <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Conways.GameOfLife.API\Conways.GameOfLife.API.csproj" />
     </ItemGroup>
 
 </Project>

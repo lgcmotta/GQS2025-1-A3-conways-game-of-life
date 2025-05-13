@@ -13,11 +13,11 @@ public class BoardDesignTimeDbContextFactory : IDesignTimeDbContextFactory<Board
     {
         var configuration = ConfigurationFactory.CreateConfiguration();
 
-        var connectionString = configuration.GetConnectionString(nameof(BoardDbContext));
+        var connectionString = configuration.GetConnectionString("ConwaysGameOfLife");
 
         if (string.IsNullOrWhiteSpace(connectionString))
         {
-            throw new InvalidOperationException($"Connection string with key ${nameof(BoardDbContext)} was not found");
+            throw new InvalidOperationException($"Connection string with key 'Postgres' was not found");
         }
 
         var options = new DbContextOptionsBuilder<BoardDbContext>()

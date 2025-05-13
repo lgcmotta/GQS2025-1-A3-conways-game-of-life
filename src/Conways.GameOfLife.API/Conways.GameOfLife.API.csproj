@@ -1,15 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>b6f29371-e8b7-4d75-a368-06b594b78b51</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Conways.GameOfLife.Infrastructure.PostgreSQL\Conways.GameOfLife.Infrastructure.PostgreSQL.csproj"/>
+    <ProjectReference Include="..\Conways.GameOfLife.ServiceDefaults\Conways.GameOfLife.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>

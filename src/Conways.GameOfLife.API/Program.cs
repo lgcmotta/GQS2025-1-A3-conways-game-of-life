@@ -12,10 +12,7 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration
-    .AddEnvironmentVariables();
-
-builder.Logging.AddSerilogLogging(builder.Configuration);
+builder.AddServiceDefaults();
 
 var v1 = new ApiVersion(1, minorVersion: 0);
 
@@ -42,10 +39,11 @@ builder.Services
 
 builder.Services.AddOpenApi();
 
-builder.Services.AddOpenTelemetryObservability(builder.Configuration);
+// builder.Services.AddOpenTelemetryObservability(builder.Configuration);
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
 app.MapOpenApi();
 app.MapScalarApiReference();
 

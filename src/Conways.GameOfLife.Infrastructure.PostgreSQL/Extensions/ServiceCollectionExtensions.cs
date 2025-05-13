@@ -11,16 +11,16 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddBoardDbContexts(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(nameof(BoardDbContext));
-        
+        var connectionString = configuration.GetConnectionString("ConwaysGameOfLife");
+
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
-        
+
         var retries = configuration.GetValue<int>("PostgresSettings:RetryCount");
 
         services.AddBoardDbContext<BoardDbContext>(connectionString, retries);
-        
+
         services.AddBoardDbContext<BoardDbContextReadOnly>(connectionString, retries, useInterceptors: false);
-        
+
         return services;
     }
 
@@ -39,7 +39,7 @@ public static class ServiceCollectionExtensions
             });
 
             if (!useInterceptors) return;
-            
+
             var interceptors = InterceptorsAssemblyScanner.Scan(provider, typeof(BoardDbContext).Assembly);
 
             builder.AddInterceptors(interceptors);
