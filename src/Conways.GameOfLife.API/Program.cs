@@ -31,20 +31,13 @@ builder.Services
         options.ApiVersionReader = new UrlSegmentApiVersionReader();
         options.DefaultApiVersion = v1;
     })
-    .AddApiExplorer(options =>
-    {
-        options.GroupNameFormat = "'v'V";
-        options.SubstituteApiVersionInUrl = true;
-    })
     .EnableApiVersionBinding();
 
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
-app.MapOpenApi();
-app.MapScalarApiReference();
+app.MapDefaultHealthChecks();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
@@ -53,13 +46,16 @@ var v1Set = app.NewApiVersionSet()
     .ReportApiVersions()
     .Build();
 
-var api = app.MapGroup("/api/v{version:apiVersion}")
+var api = app.MapGroup($"/api/v{v1:V}")
     .WithApiVersionSet(v1Set);
 
 api.MapCreateBoardEndpoint(v1)
     .MapNextGenerationEndpoint(v1)
     .MapNextGenerationsEndpoint(v1)
     .MapFinalGenerationEndpoint(v1);
+
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 await app.Services
     .MigrateDatabaseAsync()
