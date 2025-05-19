@@ -13,7 +13,6 @@ public static class CreateBoardWebApplicationExtensions
         group.MapPost("/boards", CreateBoardEndpoint.PostAsync)
             .WithName("CreateNewBoard")
             .WithDisplayName("Create New Board")
-            // .WithOpenApi()
             .WithTags("Create a New Board")
             .MapToApiVersion(version)
             .Produces<CreateBoardResponse>(contentType: contentType)

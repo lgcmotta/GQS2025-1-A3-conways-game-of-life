@@ -13,7 +13,6 @@ public static class NextGenerationsWebApplicationExtensions
         group.MapGet("/boards/{boardId}/generations/{generations:int}", NextGenerationsEndpoint.GetAsync)
             .WithName("GetNextGenerations")
             .WithDisplayName("Get Board Next x Generations")
-            // .WithOpenApi()
             .WithTags("Get Board's Next x Generation")
             .MapToApiVersion(version)
             .Produces<NextGenerationsResponse>(contentType: contentType)
