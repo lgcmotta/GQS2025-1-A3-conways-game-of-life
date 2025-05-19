@@ -96,3 +96,11 @@ resharper_use_collection_expression_highlighting = none
 
 [**/NextGenerationTests.cs]
 resharper_use_collection_expression_highlighting = none
+
+[**/Conways.GameOfLife.ServiceDefaults/**/*.cs]
+dotnet_style_namespace_match_folder = false
+resharper_check_namespace_highlighting = none
+
+[**/Conways.GameOfLife.ServiceDefaults/*.cs]
+dotnet_style_namespace_match_folder = false
+resharper_check_namespace_highlighting = none

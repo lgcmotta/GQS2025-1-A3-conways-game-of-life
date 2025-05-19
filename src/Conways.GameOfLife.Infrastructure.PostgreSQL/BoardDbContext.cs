@@ -4,6 +4,8 @@ namespace Conways.GameOfLife.Infrastructure.PostgreSQL;
 
 public sealed class BoardDbContext : DbContext
 {
+    public const string DatabaseName = nameof(GameOfLife);
+
     public BoardDbContext(DbContextOptions<BoardDbContext> options) : base(options)
     {
         ChangeTracker.AutoDetectChangesEnabled = true;

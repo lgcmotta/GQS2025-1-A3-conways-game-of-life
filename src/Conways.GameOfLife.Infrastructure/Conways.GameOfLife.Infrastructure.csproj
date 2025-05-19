@@ -1,29 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Hashids.net"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json"/>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
-    <PackageReference Include="OpenTelemetry"/>
-    <PackageReference Include="OpenTelemetry.Exporter.Console"/>
-    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol"/>
-    <PackageReference Include="OpenTelemetry.Extensions.Hosting"/>
-    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"/>
-    <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore"/>
-    <PackageReference Include="OpenTelemetry.Instrumentation.EventCounters"/>
-    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime"/>
-    <PackageReference Include="Serilog.AspNetCore"/>
-    <PackageReference Include="Serilog.Sinks.Console"/>
-    <PackageReference Include="Serilog.Sinks.OpenTelemetry"/>
   </ItemGroup>
 
   <ItemGroup>

@@ -45,7 +45,7 @@ public class NextGenerationsTests
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationsQuery(boardId!, generations));
+        async Task RequestQuery() => await mediator.Send(new NextGenerationsQuery(boardId!, generations), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
@@ -64,7 +64,7 @@ public class NextGenerationsTests
         var boardId = hashIds.EncodeLong(1234);
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationsQuery(boardId, 3));
+        async Task RequestQuery() => await mediator.Send(new NextGenerationsQuery(boardId, 3), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<BoardNotFoundException>(RequestQuery);
@@ -127,7 +127,7 @@ public class NextGenerationsTests
 
         // Assert
         body.Should().NotBeNull();
-        body!.Generations.Should().HaveCount(6);
+        body.Generations.Should().HaveCount(6);
         body.Stable.Should().BeTrue();
     }
 
@@ -155,6 +155,6 @@ public class NextGenerationsTests
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         body.Should().NotBeNull();
-        body!.Errors.Should().Contain($"Board with Id '{boardId}' was not found");
+        body.Errors.Should().Contain($"Board with Id '{boardId}' was not found");
     }
 }

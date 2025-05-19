@@ -52,7 +52,7 @@ jobs:
           /d:sonar.qualitygate.wait=$QUALITY_GATE_WAIT \
           /d:sonar.cs.vscoveragexml.reportsPaths="**/coverage.xml" \
           /d:sonar.scanner.scanAll=false \
-          /d:sonar.exclusions="**/Program.cs,**/Diagnostics/*,**/Extensions/*,**/Migrations/*,**/Interceptors/*,**/Factories/*,**/BoardDesignTimeDbContextFactory.cs"
+          /d:sonar.exclusions="**/Program.cs,**/Diagnostics/*,**/Extensions/*,**/Migrations/*,**/Interceptors/*,**/Factories/*,**/BoardDesignTimeDbContextFactory.cs,src/Conways.GameOfLife.AppHost/**,src/Conways.GameOfLife.ServiceDefaults/**"
 
       - name: .NET Restore
         shell: bash
