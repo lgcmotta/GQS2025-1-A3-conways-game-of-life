@@ -8,9 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		README.md = README.md
 		docker-compose.yml = docker-compose.yml
-		otel-collector-config.yml = otel-collector-config.yml
 		.dockerignore = .dockerignore
-		prometheus.yml = prometheus.yml
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
@@ -54,9 +52,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.GameOfLife.AppHost", "src\Conways.GameOfLife.AppHost\Conways.GameOfLife.AppHost.csproj", "{7DED051D-B336-4C32-9ECD-A034321A9D40}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aspire", "Aspire", "{1F02AA9F-62AD-40D9-BD42-451C4E94CE31}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Aspire", "1. Aspire", "{1F02AA9F-62AD-40D9-BD42-451C4E94CE31}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{F3E9AB37-6274-4933-9334-356E9030B94F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. API", "2. API", "{F3E9AB37-6274-4933-9334-356E9030B94F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.GameOfLife.ServiceDefaults", "src\Conways.GameOfLife.ServiceDefaults\Conways.GameOfLife.ServiceDefaults.csproj", "{C7F06B77-F1CC-47F4-B67D-10840416F9FC}"
 EndProject
