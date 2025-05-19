@@ -69,7 +69,8 @@ public static class Extensions
                             !context.Request.Path.StartsWithSegments(ReadinessEndpointPath) &&
                             !context.Request.Path.StartsWithSegments(LivenessEndpointPath)
                     )
-                    .AddHttpClientInstrumentation();
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation();
             });
 
         builder.AddOpenTelemetryExporters();
