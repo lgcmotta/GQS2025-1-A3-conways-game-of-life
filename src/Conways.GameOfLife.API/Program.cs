@@ -42,7 +42,8 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.MapDefaultHealthChecks();
-
+app.MapOpenApi();
+app.MapScalarApiReference();
 app.UseMiddleware<ExceptionMiddleware>();
 
 var v1Set = app.NewApiVersionSet()
@@ -57,9 +58,6 @@ api.MapCreateBoardEndpoint(v1)
     .MapNextGenerationEndpoint(v1)
     .MapNextGenerationsEndpoint(v1)
     .MapFinalGenerationEndpoint(v1);
-
-app.MapOpenApi();
-app.MapScalarApiReference();
 
 await app.Services
     .MigrateDatabaseAsync()
