@@ -1,9 +1,5 @@
-using Asp.Versioning;
-using Asp.Versioning.Builder;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting.HealthChecks;
@@ -42,10 +38,10 @@ public static class Extensions
     private static TBuilder ConfigureOpenTelemetry<TBuilder>(this TBuilder builder)
         where TBuilder : IHostApplicationBuilder
     {
-        builder.Logging.AddOpenTelemetry(logging =>
+        builder.Logging.AddOpenTelemetry(options =>
         {
-            logging.IncludeFormattedMessage = true;
-            logging.IncludeScopes = true;
+            options.IncludeFormattedMessage = true;
+            options.IncludeScopes = true;
         });
 
         builder.Services.AddOpenTelemetry()
@@ -111,45 +107,54 @@ public static class Extensions
         app.MapHealthCheck(ReadinessEndpointPath, check => !check.Tags.Contains("ready"))
             .WithName("readiness-health-check")
             .WithDisplayName("Readiness Health Check")
-            .WithTags("Health Checks");
+            .WithTags("Health Checks")
+            .Produces<HealthCheckResponse>(contentType: MediaTypeNames.Application.Json)
+            .Produces<HealthCheckResponse>(StatusCodes.Status503ServiceUnavailable, contentType: MediaTypeNames.Application.ProblemJson);
 
         app.MapHealthCheck(LivenessEndpointPath, check => !check.Tags.Contains("ready"))
             .WithName("liveness-health-check")
             .WithDisplayName("Liveness Health Check")
-            .WithTags("Health Checks");
+            .WithTags("Health Checks")
+            .Produces<HealthCheckResponse>(contentType: MediaTypeNames.Application.Json)
+            .Produces<HealthCheckResponse>(StatusCodes.Status503ServiceUnavailable, contentType: MediaTypeNames.Application.ProblemJson);
 
         return app;
     }
 
     private static RouteHandlerBuilder MapHealthCheck(this WebApplication app, [StringSyntax("uri")] string pattern, Func<HealthCheckRegistration, bool> predicate)
     {
-        return app.MapGet(pattern, async (HealthCheckService service, CancellationToken cancellationToken = default) =>
+        return app.MapGet(pattern, async Task (HttpContext context, HealthCheckService service, CancellationToken cancellationToken = default) =>
         {
             var report = await service.CheckHealthAsync(predicate, cancellationToken);
 
-            var response = new
+            var response = new HealthCheckResponse
             {
                 Status = report.Status.ToString(),
-                TotalDuration = report.TotalDuration.ToString("c"),
+                TotalDuration = report.TotalDuration,
                 Entries = report.Entries.ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => new
+                    pair => pair.Key,
+                    pair => new HealthCheckEntry
                     {
-                        Status = kvp.Value.Status.ToString(),
-                        kvp.Value.Description,
-                        Duration = kvp.Value.Duration.ToString("c"),
-                        Exception = kvp.Value.Exception?.Message,
-                        kvp.Value.Data
+                        Status = pair.Value.Status.ToString(),
+                        Description = pair.Value.Description,
+                        Duration = pair.Value.Duration,
+                        Exception = pair.Value.Exception?.Message,
+                        Data = pair.Value.Data
                     })
             };
 
-            return report.Status switch
+            var (statusCode, contentType) = report.Status switch
             {
-                HealthStatus.Healthy => Results.Ok(response),
-                HealthStatus.Degraded => Results.Ok(response),
-                HealthStatus.Unhealthy => Results.Ok(response),
-                _ => Results.Ok(response)
+                HealthStatus.Healthy => (StatusCodes.Status200OK, MediaTypeNames.Application.Json),
+                HealthStatus.Degraded => (StatusCodes.Status200OK, MediaTypeNames.Application.ProblemJson),
+                HealthStatus.Unhealthy => (StatusCodes.Status503ServiceUnavailable, MediaTypeNames.Application.ProblemJson),
+                _ => (StatusCodes.Status200OK, MediaTypeNames.Application.Json),
             };
+
+            context.Response.ContentType = contentType;
+            context.Response.StatusCode = statusCode;
+
+            await context.Response.WriteAsJsonAsync(response, JsonSerializerOptions.Web, cancellationToken);
         });
     }
 }

@@ -1,22 +1,6 @@
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.Extensions.Hosting.HealthChecks;
-
-internal class ReadinessBackgroundService : BackgroundService
-{
-    private readonly ReadinessHealthCheck _readinessCheck;
-
-    public ReadinessBackgroundService(ReadinessHealthCheck readinessCheck)
-    {
-        _readinessCheck = readinessCheck;
-    }
-
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        _readinessCheck.StartupCompleted = true;
-        return Task.CompletedTask;
-    }
-}
 
 internal class ReadinessHealthCheck : IHealthCheck
 {

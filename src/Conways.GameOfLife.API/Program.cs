@@ -30,6 +30,10 @@ builder.Services
         options.AssumeDefaultVersionWhenUnspecified = true;
         options.ApiVersionReader = new UrlSegmentApiVersionReader();
         options.DefaultApiVersion = v1;
+    }).AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'V";
+        options.SubstituteApiVersionInUrl = true;
     })
     .EnableApiVersionBinding();
 
@@ -46,7 +50,7 @@ var v1Set = app.NewApiVersionSet()
     .ReportApiVersions()
     .Build();
 
-var api = app.MapGroup($"/api/v{v1:V}")
+var api = app.MapGroup("/api/v{version:apiVersion}")
     .WithApiVersionSet(v1Set);
 
 api.MapCreateBoardEndpoint(v1)
