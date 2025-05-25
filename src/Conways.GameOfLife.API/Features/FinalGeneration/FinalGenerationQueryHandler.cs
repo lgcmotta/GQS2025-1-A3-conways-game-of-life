@@ -34,13 +34,12 @@ public class FinalGenerationQueryHandler : IRequestHandler<FinalGenerationQuery,
         }
 
         var attempts = 0;
-        var stable = false;
 
-        while (!stable && attempts < request.MaxAttempts)
+        while (attempts < request.MaxAttempts)
         {
             var nextGeneration = board.NextGeneration();
 
-            stable = board.HasReachedStableState(nextGeneration);
+            var stable = board.HasReachedStableState(nextGeneration);
 
             board.AddGeneration(board.CurrentGeneration.Number + 1, nextGeneration);
 
