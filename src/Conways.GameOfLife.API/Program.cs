@@ -12,14 +12,12 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration
-    .AddEnvironmentVariables();
-
-builder.Logging.AddSerilogLogging(builder.Configuration);
+builder.AddServiceDefaults();
 
 var v1 = new ApiVersion(1, minorVersion: 0);
 
 builder.Services
+    .AddPostgreHealthCheck(builder.Configuration)
     .AddBoardDbContexts(builder.Configuration)
     .AddHashIds(builder.Configuration)
     .AddCQRS()
@@ -32,8 +30,7 @@ builder.Services
         options.AssumeDefaultVersionWhenUnspecified = true;
         options.ApiVersionReader = new UrlSegmentApiVersionReader();
         options.DefaultApiVersion = v1;
-    })
-    .AddApiExplorer(options =>
+    }).AddApiExplorer(options =>
     {
         options.GroupNameFormat = "'v'V";
         options.SubstituteApiVersionInUrl = true;
@@ -42,13 +39,11 @@ builder.Services
 
 builder.Services.AddOpenApi();
 
-builder.Services.AddOpenTelemetryObservability(builder.Configuration);
-
 var app = builder.Build();
 
+app.MapDefaultHealthChecks();
 app.MapOpenApi();
 app.MapScalarApiReference();
-
 app.UseMiddleware<ExceptionMiddleware>();
 
 var v1Set = app.NewApiVersionSet()

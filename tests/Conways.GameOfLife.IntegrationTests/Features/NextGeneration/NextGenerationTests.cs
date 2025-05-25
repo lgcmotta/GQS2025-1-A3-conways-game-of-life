@@ -44,7 +44,7 @@ public class NextGenerationTests
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId!));
+        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId!), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
@@ -63,7 +63,7 @@ public class NextGenerationTests
         var boardId = hashIds.EncodeLong(1234);
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId));
+        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<BoardNotFoundException>(RequestQuery);
@@ -133,7 +133,7 @@ public class NextGenerationTests
 
         // Assert
         body.Should().NotBeNull();
-        body!.Generation.Should().BeEquivalentTo(expectedNextState);
+        body.Generation.Should().BeEquivalentTo(expectedNextState);
     }
 
     [Fact]
@@ -160,6 +160,6 @@ public class NextGenerationTests
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         body.Should().NotBeNull();
-        body!.Errors.Should().Contain($"Board with Id '{boardId}' was not found");
+        body.Errors.Should().Contain($"Board with Id '{boardId}' was not found");
     }
 }
