@@ -13,10 +13,10 @@ public static class FinalGenerationEndpoint
         CancellationToken cancellationToken = default)
     {
         maxAttempts ??= configuration.GetValue<int>("Board:MaxAttempts");
-        
+
         var response = await mediator.Send(new FinalGenerationQuery(boardId, maxAttempts.Value), cancellationToken)
             .ConfigureAwait(continueOnCapturedContext: false);
-        
+
         return Results.Ok(response);
     }
 }

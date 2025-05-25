@@ -22,7 +22,7 @@ public class NextGenerationTests
 
         await context.SaveChangesAsync();
 
-        return  hashIds.EncodeLong(board.Id);
+        return hashIds.EncodeLong(board.Id);
     }
 
     public static TheoryData<string?> GetBoardIdsForValidationFailedException()
@@ -44,7 +44,8 @@ public class NextGenerationTests
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId!), TestContext.Current.CancellationToken);
+        async Task RequestQuery() =>
+            await mediator.Send(new NextGenerationQuery(boardId!), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
@@ -63,7 +64,8 @@ public class NextGenerationTests
         var boardId = hashIds.EncodeLong(1234);
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationQuery(boardId), TestContext.Current.CancellationToken);
+        async Task RequestQuery() =>
+            await mediator.Send(new NextGenerationQuery(boardId), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<BoardNotFoundException>(RequestQuery);
@@ -73,19 +75,9 @@ public class NextGenerationTests
     public async Task NextGeneration_WhenBoardExists_ShouldReturnNextGenerationResponse()
     {
         // Arrange
-        var firstGeneration = new[,]
-        {
-            { true, true, false },
-            { false, true, false },
-            { false, false, false }
-        };
+        var firstGeneration = new[,] { { true, true, false }, { false, true, false }, { false, false, false } };
 
-        var expectedNextState = new bool[][]
-        {
-            [true, true, false],
-            [true, true, false],
-            [false, false, false]
-        };
+        var expectedNextState = new bool[][] { [true, true, false], [true, true, false], [false, false, false] };
 
         var boardId = await SeedBoard(firstGeneration);
 
@@ -104,32 +96,23 @@ public class NextGenerationTests
     public async Task NextGeneration_WhenRequestingUsingAPI_ShouldRespondWithExpectedNextGeneration()
     {
         // Arrange
-        var firstGeneration = new[,]
-        {
-            { true, true, false },
-            { false, true, false },
-            { false, false, false }
-        };
+        var firstGeneration = new[,] { { true, true, false }, { false, true, false }, { false, false, false } };
 
-        var expectedNextState = new bool[][]
-        {
-            [true, true, false],
-            [true, true, false],
-            [false, false, false]
-        };
+        var expectedNextState = new bool[][] { [true, true, false], [true, true, false], [false, false, false] };
 
         var boardId = await SeedBoard(firstGeneration);
 
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutoRedirect = false,
-            BaseAddress = _factory.Server.BaseAddress
+            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
         });
 
         // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next",
+            TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<NextGenerationResponse>(cancellationToken: TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadFromJsonAsync<NextGenerationResponse>(
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();
@@ -142,8 +125,7 @@ public class NextGenerationTests
         // Arrange
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutoRedirect = false,
-            BaseAddress = _factory.Server.BaseAddress
+            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
         });
 
         using var scope = _factory.Services.CreateScope();
@@ -153,9 +135,11 @@ public class NextGenerationTests
         var boardId = hashIds.EncodeLong(1234);
 
         // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next",
+            TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(cancellationToken: TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

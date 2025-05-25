@@ -28,7 +28,7 @@ public class CreateBoardCommandHandler : IRequestHandler<CreateBoardCommand, Cre
             .ConfigureAwait(continueOnCapturedContext: false);
 
         var boardId = _hashids.EncodeLong(board.Id);
-        
+
         return new CreateBoardResponse(boardId);
     }
 }

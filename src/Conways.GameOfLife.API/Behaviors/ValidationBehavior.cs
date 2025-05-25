@@ -15,7 +15,8 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         _validators = validators;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         var validationTasks = _validators.Select(validator => validator.ValidateAsync(request, cancellationToken));
 
@@ -25,12 +26,12 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         if (validationFailures.Count == 0)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            return await next().ConfigureAwait(continueOnCapturedContext: false);
+            return await next(cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
         }
 
         var errors = validationFailures
-            .Select(failure => new ValidationFailedException.ValidationError(failure.PropertyName, failure.ErrorMessage));
+            .Select(failure =>
+                new ValidationFailedException.ValidationError(failure.PropertyName, failure.ErrorMessage));
 
         throw new ValidationFailedException(errors);
     }

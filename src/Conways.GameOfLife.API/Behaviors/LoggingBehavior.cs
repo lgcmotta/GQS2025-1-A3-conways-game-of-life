@@ -44,8 +44,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
                 "[{Behavior}] - An exception occurred while handling request of type {RequestType}",
                 behaviorName, requestType);
 
-            throw new Exception(
-                $"[{behaviorName}] - Failed to handle request of type {requestType}", exception);
+            throw;
         }
     }
 }

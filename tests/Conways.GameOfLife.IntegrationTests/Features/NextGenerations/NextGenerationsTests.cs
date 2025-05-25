@@ -22,30 +22,30 @@ public class NextGenerationsTests
 
         await context.SaveChangesAsync();
 
-        return  hashIds.EncodeLong(board.Id);
+        return hashIds.EncodeLong(board.Id);
     }
 
     public static TheoryData<string?, int> GetNextGenerationsQueryInputsForValidationFailedException()
     {
         return new TheoryData<string?, int>
         {
-            { null, 1 },
-            { string.Empty, 1 },
-            { "JzjO0ZW6D83", 0 },
-            { "JzjO0ZW6D83", -1 }
+            { null, 1 }, { string.Empty, 1 }, { "JzjO0ZW6D83", 0 }, { "JzjO0ZW6D83", -1 }
         };
     }
 
     [Theory]
     [MemberData(nameof(GetNextGenerationsQueryInputsForValidationFailedException))]
-    public async Task NextGenerations_WhenBoardIdIsNullOrEmptyOrGenerationsIsNegativeOrZero_ShouldThrowValidationFailedException(string? boardId, int generations)
+    public async Task
+        NextGenerations_WhenBoardIdIsNullOrEmptyOrGenerationsIsNegativeOrZero_ShouldThrowValidationFailedException(
+            string? boardId, int generations)
     {
         using var scope = _factory.Services.CreateScope();
 
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationsQuery(boardId!, generations), TestContext.Current.CancellationToken);
+        async Task RequestQuery() => await mediator.Send(new NextGenerationsQuery(boardId!, generations),
+            TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
@@ -64,7 +64,8 @@ public class NextGenerationsTests
         var boardId = hashIds.EncodeLong(1234);
 
         // Act
-        async Task RequestQuery() => await mediator.Send(new NextGenerationsQuery(boardId, 3), TestContext.Current.CancellationToken);
+        async Task RequestQuery() =>
+            await mediator.Send(new NextGenerationsQuery(boardId, 3), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<BoardNotFoundException>(RequestQuery);
@@ -76,12 +77,9 @@ public class NextGenerationsTests
         // Arrange
         var firstGeneration = new[,]
         {
-            { false, false, false, false, false, false },
-            { false, true, true, false, false, false },
-            { false, true, false, false, false, false },
-            { false, false, false, true, false, false },
-            { false, false, false, true, true, false },
-            { false, false, false, false, false, false }
+            { false, false, false, false, false, false }, { false, true, true, false, false, false },
+            { false, true, false, false, false, false }, { false, false, false, true, false, false },
+            { false, false, false, true, true, false }, { false, false, false, false, false, false }
         };
 
         var boardId = await SeedBoard(firstGeneration);
@@ -100,30 +98,29 @@ public class NextGenerationsTests
     }
 
     [Fact]
-    public async Task NextGenerations_WhenRequestingUsingAPI_ShouldRespondWithExpectedNextGenerationsCountIncludingTheFirst()
+    public async Task
+        NextGenerations_WhenRequestingUsingAPI_ShouldRespondWithExpectedNextGenerationsCountIncludingTheFirst()
     {
         // Arrange
         var firstGeneration = new[,]
         {
-            { false, false, false, false, false, false },
-            { false, true, true, false, false, false },
-            { false, true, false, false, false, false },
-            { false, false, false, true, false, false },
-            { false, false, false, true, true, false },
-            { false, false, false, false, false, false }
+            { false, false, false, false, false, false }, { false, true, true, false, false, false },
+            { false, true, false, false, false, false }, { false, false, false, true, false, false },
+            { false, false, false, true, true, false }, { false, false, false, false, false, false }
         };
         var boardId = await SeedBoard(firstGeneration);
 
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutoRedirect = false,
-            BaseAddress = _factory.Server.BaseAddress
+            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
         });
 
         // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/{5}", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/{5}",
+            TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<NextGenerationsResponse>(cancellationToken: TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadFromJsonAsync<NextGenerationsResponse>(
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();
@@ -137,8 +134,7 @@ public class NextGenerationsTests
         // Arrange
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutoRedirect = false,
-            BaseAddress = _factory.Server.BaseAddress
+            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
         });
 
         using var scope = _factory.Services.CreateScope();
@@ -148,9 +144,11 @@ public class NextGenerationsTests
         var boardId = hashIds.EncodeLong(1234);
 
         // Act
-        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/{5}", TestContext.Current.CancellationToken);
+        var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/{5}",
+            TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(cancellationToken: TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

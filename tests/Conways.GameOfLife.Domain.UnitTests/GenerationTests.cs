@@ -18,16 +18,13 @@ public class GenerationTests
             { null!, null!, true },
             {
                 new[,] { { false, false, true }, { true, true, false } },
-                new[,] { { false, false, true }, { true, true, false }, { false, true, false } },
-                false
+                new[,] { { false, false, true }, { true, true, false }, { false, true, false } }, false
             },
             {
                 new[,] { { false, false }, { true, true } },
-                new[,] { { false, false, true }, { true, true, false } },
-                false
+                new[,] { { false, false, true }, { true, true, false } }, false
             }
         };
-
     }
 
     public static TheoryData<bool[,], (int, int), int> GetBoardGenerationsForCountLiveNeighbors()
@@ -39,7 +36,7 @@ public class GenerationTests
             { new[,] { { false, false, false }, { false, true, false }, { true, false, false } }, (2, 0), 1 }
         };
     }
-    
+
     [Fact]
     public void Constructor_WhenFirstGenerationIsNull_ShouldThrowArgumentNullException()
     {
@@ -50,7 +47,8 @@ public class GenerationTests
     [InlineData(0, 0)]
     [InlineData(0, 1)]
     [InlineData(1, 0)]
-    public void Constructor_WhenRowsOrColumnsAreZeroOrNegative_ShouldThrowArgumentOutOfRangeException(int rows, int columns)
+    public void Constructor_WhenRowsOrColumnsAreZeroOrNegative_ShouldThrowArgumentOutOfRangeException(int rows,
+        int columns)
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new Generation(rows, columns));
     }
@@ -61,7 +59,7 @@ public class GenerationTests
         // Arrange
         const int rows = 2;
         const int columns = 2;
-        
+
         // Act
         var generation = new Generation(rows, columns);
 
@@ -71,10 +69,11 @@ public class GenerationTests
         generation[1, 0].Should().BeFalse();
         generation[1, 1].Should().BeFalse();
     }
-    
+
     [Theory]
     [MemberData(nameof(GetBoardGenerationsForEqualityOperatorGuardClauses))]
-    public void EqualityOperator_WhenComparingGenerations_ShouldValidateGuardClauses(Generation? left, Generation? right, bool expected)
+    public void EqualityOperator_WhenComparingGenerations_ShouldValidateGuardClauses(Generation? left,
+        Generation? right, bool expected)
     {
         // Act
         var equal = left == right;
@@ -126,14 +125,14 @@ public class GenerationTests
 
         var generation1 = new Generation(firstGeneration1);
         var generation2 = new Generation(firstGeneration2);
-        
+
         // Act
         var equal = generation1 != generation2;
 
         // Assert
         equal.Should().BeFalse();
     }
-    
+
     [Fact]
     public void InequalityOperator_WhenGenerationsAreNotEqual_ShouldReturnTrue()
     {
@@ -143,20 +142,20 @@ public class GenerationTests
 
         var generation1 = new Generation(firstGeneration1);
         var generation2 = new Generation(firstGeneration2);
-        
+
         // Act
         var equal = generation1 != generation2;
 
         // Assert
         equal.Should().BeTrue();
     }
-    
+
     [Fact]
     public void ImplicitOperator_WhenConvertingFromGeneration_ShouldReturn2DArrayOfBooleans()
     {
         // Arrange
-        var generation = new Generation(new [,] { { false, false }, { false, false } });
-        
+        var generation = new Generation(new[,] { { false, false }, { false, false } });
+
         // Act
         bool[,] value = generation;
 
@@ -166,7 +165,8 @@ public class GenerationTests
 
     [Theory]
     [MemberData(nameof(GetBoardGenerationsForCountLiveNeighbors))]
-    public void CountLiveNeighbors_WhenBoardIsValid_ShouldReturnCorrectCount(bool[,] firstGeneration, (int, int) coordinates, int expected)
+    public void CountLiveNeighbors_WhenBoardIsValid_ShouldReturnCorrectCount(bool[,] firstGeneration,
+        (int, int) coordinates, int expected)
     {
         // Arrange
         var generation = new Generation(firstGeneration);
@@ -183,19 +183,9 @@ public class GenerationTests
     public void HasReachedStableState_WhenNextStateIsSameAsCurrentState_ShouldReturnTrue()
     {
         // Arrange
-        var firstGeneration = new[,]
-        {
-            { true, true, false },
-            { false, true, false },
-            { false, false, false }
-        };
+        var firstGeneration = new[,] { { true, true, false }, { false, true, false }, { false, false, false } };
 
-        var nextGeneration = new[,]
-        {
-            { true, true, false },
-            { false, true, false },
-            { false, false, false }
-        };
+        var nextGeneration = new[,] { { true, true, false }, { false, true, false }, { false, false, false } };
 
         var generation1 = new Generation(firstGeneration);
         var generation2 = new Generation(nextGeneration);
@@ -211,19 +201,9 @@ public class GenerationTests
     public void HasReachedStableState_WhenNextStateIsNotTheSameAsCurrentState_ShouldReturnFalse()
     {
         // Arrange
-        var firstGeneration = new[,]
-        {
-            { false, false, false },
-            { true, true, false },
-            { true, false, false }
-        };
+        var firstGeneration = new[,] { { false, false, false }, { true, true, false }, { true, false, false } };
 
-        var nextGeneration = new[,]
-        {
-            { true, true, false },
-            { false, true, false },
-            { false, false, false }
-        };
+        var nextGeneration = new[,] { { true, true, false }, { false, true, false }, { false, false, false } };
 
         var generation1 = new Generation(firstGeneration);
         var generation2 = new Generation(nextGeneration);

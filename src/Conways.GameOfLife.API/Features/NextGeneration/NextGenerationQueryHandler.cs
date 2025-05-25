@@ -18,7 +18,7 @@ public class NextGenerationQueryHandler : IRequestHandler<NextGenerationQuery, N
         _context = context;
         _hashids = hashids;
     }
-    
+
     public async Task<NextGenerationResponse> Handle(NextGenerationQuery request, CancellationToken cancellationToken)
     {
         var boardId = _hashids.DecodeLong(request.BoardId)[0];

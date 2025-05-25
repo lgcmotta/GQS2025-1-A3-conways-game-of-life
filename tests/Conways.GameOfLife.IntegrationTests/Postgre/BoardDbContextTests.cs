@@ -15,12 +15,7 @@ public class BoardDbContextTests
         // Arrange
         long boardId;
 
-        var firstGeneration = new[,]
-        {
-            { true, true, false },
-            { false, true, false },
-            { false, false, false }
-        };
+        var firstGeneration = new[,] { { true, true, false }, { false, true, false }, { false, false, false } };
 
         // Act
         using (var scope = _factory.Services.CreateScope())
@@ -34,7 +29,6 @@ public class BoardDbContextTests
             await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
             boardId = board.Id;
-
         }
 
         // Assert
@@ -61,12 +55,7 @@ public class BoardDbContextTests
         {
             var context = scope.ServiceProvider.GetRequiredService<BoardDbContext>();
 
-            var firstGeneration = new[,]
-            {
-                { true, true, false },
-                { false, true, false },
-                { false, false, false }
-            };
+            var firstGeneration = new[,] { { true, true, false }, { false, true, false }, { false, false, false } };
 
             var board = new Board(firstGeneration);
 
@@ -91,7 +80,6 @@ public class BoardDbContextTests
             board.AddGeneration(1, nextGen);
 
             await context.SaveChangesAsync(TestContext.Current.CancellationToken);
-
         }
 
         // Assert

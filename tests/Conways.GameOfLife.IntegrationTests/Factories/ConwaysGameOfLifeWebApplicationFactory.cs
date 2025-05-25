@@ -12,7 +12,8 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
 
     public async ValueTask InitializeAsync()
     {
-        await _container.StartAsync(TestContext.Current.CancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+        await _container.StartAsync(TestContext.Current.CancellationToken)
+            .ConfigureAwait(continueOnCapturedContext: false);
 
         using var scope = Services.CreateScope();
 
@@ -27,7 +28,6 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-
         builder.ConfigureServices(services =>
         {
             RemoveDbContextOptions<BoardDbContext>(services);
@@ -38,10 +38,7 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
 
             services.AddDbContext<BoardDbContext>((provider, optionsBuilder) =>
             {
-                optionsBuilder.UseNpgsql(connectionString, pgsql =>
-                {
-                    pgsql.EnableRetryOnFailure(3);
-                });
+                optionsBuilder.UseNpgsql(connectionString, pgsql => { pgsql.EnableRetryOnFailure(3); });
 
                 var interceptors = InterceptorsAssemblyScanner.Scan(provider, typeof(BoardDbContext).Assembly);
 
@@ -50,10 +47,7 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
 
             services.AddDbContext<BoardDbContextReadOnly>(optionsBuilder =>
             {
-                optionsBuilder.UseNpgsql(connectionString, pgsql =>
-                {
-                    pgsql.EnableRetryOnFailure(3);
-                });
+                optionsBuilder.UseNpgsql(connectionString, pgsql => { pgsql.EnableRetryOnFailure(3); });
             });
         });
     }
@@ -61,9 +55,9 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
     private static void RemoveDbContextOptions<TDbContext>(IServiceCollection services)
         where TDbContext : DbContext
     {
-        var serviceDescriptor = services.FirstOrDefault(
-            descriptor => descriptor.ServiceType == typeof(DbContextOptions<TDbContext>)
-        );
+        var serviceDescriptor =
+            services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(DbContextOptions<TDbContext>)
+            );
 
         if (serviceDescriptor is not null)
         {

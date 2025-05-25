@@ -18,7 +18,7 @@ public class FinalGenerationQueryHandler : IRequestHandler<FinalGenerationQuery,
         _context = context;
         _hashids = hashids;
     }
-    
+
     public async Task<FinalGenerationResponse> Handle(FinalGenerationQuery request, CancellationToken cancellationToken)
     {
         var boardId = _hashids.DecodeLong(request.BoardId)[0];
@@ -41,7 +41,7 @@ public class FinalGenerationQueryHandler : IRequestHandler<FinalGenerationQuery,
             var nextGeneration = board.NextGeneration();
 
             stable = board.HasReachedStableState(nextGeneration);
-            
+
             board.AddGeneration(board.CurrentGeneration.Number + 1, nextGeneration);
 
             attempts++;
