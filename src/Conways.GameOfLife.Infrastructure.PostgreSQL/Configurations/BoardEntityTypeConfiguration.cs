@@ -14,19 +14,19 @@ public class BoardEntityTypeConfiguration : IEntityTypeConfiguration<Board>
 
         builder.Property(board => board.Id)
             .ValueGeneratedOnAdd();
-        
+
         builder.HasMany<Generation>("_generations")
             .WithOne()
             .HasForeignKey("BoardId");
 
         builder.Property<DateTime>("CreatedAt")
             .IsRequired();
-        
+
         builder.Property<DateTime?>("UpdatedAt")
             .IsRequired(false);
-        
+
         builder.Ignore(board => board.Generations);
-        
+
         builder.Ignore(board => board.CurrentGeneration);
     }
 }

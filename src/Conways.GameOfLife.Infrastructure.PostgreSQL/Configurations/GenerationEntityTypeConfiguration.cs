@@ -9,12 +9,12 @@ public class GenerationEntityTypeConfiguration : IEntityTypeConfiguration<Genera
     public void Configure(EntityTypeBuilder<Generation> builder)
     {
         builder.ToTable("Generations");
-        
+
         builder.Property<long>("Id")
             .ValueGeneratedOnAdd();
-        
+
         builder.HasKey("Id");
-        
+
         builder.Property<bool[,]>("_value")
             .HasColumnName("Value")
             .HasColumnType("BOOLEAN[][]")
@@ -26,6 +26,5 @@ public class GenerationEntityTypeConfiguration : IEntityTypeConfiguration<Genera
 
         builder.Property<DateTime>("CreatedAt")
             .IsRequired();
-
     }
 }

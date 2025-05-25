@@ -20,8 +20,9 @@ public class DateTimeSaveChangesInterceptor : SaveChangesInterceptor
             if (entityEntry.State == EntityState.Added)
             {
                 entityEntry.Property<DateTime>("CreatedAt").CurrentValue = DateTime.UtcNow;
-                
-                if (entityEntry.Properties.Any(propertyEntry => propertyEntry.Metadata.IsShadowProperty() && propertyEntry.Metadata.Name == "UpdatedAt"))
+
+                if (entityEntry.Properties.Any(propertyEntry =>
+                        propertyEntry.Metadata.IsShadowProperty() && propertyEntry.Metadata.Name == "UpdatedAt"))
                 {
                     entityEntry.Property<DateTime?>("UpdatedAt").CurrentValue = null;
                 }
@@ -32,7 +33,7 @@ public class DateTimeSaveChangesInterceptor : SaveChangesInterceptor
                 entityEntry.Property<DateTime?>("UpdatedAt").CurrentValue = DateTime.UtcNow;
             }
         }
-        
+
         return await base.SavingChangesAsync(eventData, result, cancellationToken)
             .ConfigureAwait(continueOnCapturedContext: false);
     }

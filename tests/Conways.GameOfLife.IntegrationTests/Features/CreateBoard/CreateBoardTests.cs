@@ -13,19 +13,15 @@ public class CreateBoardTests
     public async Task CreateBoard_WhenBoardIsValidSize_ShouldSaveAndEncodeBoardId()
     {
         // Arrange
-        var firstGeneration = new bool[][]
-        {
-            [false, true, false],
-            [true, true, false],
-            [false, false, false]
-        };
+        var firstGeneration = new bool[][] { [false, true, false], [true, true, false], [false, false, false] };
 
         using var scope = _factory.Services.CreateScope();
 
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        var response = await mediator.Send(new CreateBoardCommand(firstGeneration), TestContext.Current.CancellationToken);
+        var response =
+            await mediator.Send(new CreateBoardCommand(firstGeneration), TestContext.Current.CancellationToken);
 
         // Assert
         response.BoardId.Should().NotBeEmpty();
@@ -36,19 +32,15 @@ public class CreateBoardTests
     public async Task CreateBoard_WhenBoardIsNot3x3Matrix_ShouldThrowValidationFailedException()
     {
         // Arrange
-        var firstGeneration = new bool[][]
-        {
-            [false, true],
-            [true, true, false],
-            [false, false]
-        };
+        var firstGeneration = new bool[][] { [false, true], [true, true, false], [false, false] };
 
         using var scope = _factory.Services.CreateScope();
 
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // Act
-        async Task SendCommand() => await mediator.Send(new CreateBoardCommand(firstGeneration), TestContext.Current.CancellationToken);
+        async Task SendCommand() =>
+            await mediator.Send(new CreateBoardCommand(firstGeneration), TestContext.Current.CancellationToken);
 
         // Assert
         await Assert.ThrowsAsync<ValidationFailedException>(SendCommand);
@@ -60,23 +52,19 @@ public class CreateBoardTests
         // Arrange
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutoRedirect = false,
-            BaseAddress = _factory.Server.BaseAddress
+            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
         });
 
-        var firstGeneration = new bool[][]
-        {
-            [false, true, false],
-            [true, true, false],
-            [false, false, false]
-        };
+        var firstGeneration = new bool[][] { [false, true, false], [true, true, false], [false, false, false] };
 
         var jsonString = JsonSerializer.Serialize(new CreateBoardCommand(firstGeneration));
 
         // Act
-        var response = await client.PostAsync("/api/v1/boards", new StringContent(jsonString, Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken);
+        var response = await client.PostAsync("/api/v1/boards",
+            new StringContent(jsonString, Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<CreateBoardResponse>(cancellationToken: TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadFromJsonAsync<CreateBoardResponse>(
+            cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();

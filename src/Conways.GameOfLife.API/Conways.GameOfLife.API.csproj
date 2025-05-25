@@ -7,13 +7,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Conways.GameOfLife.Infrastructure.PostgreSQL\Conways.GameOfLife.Infrastructure.PostgreSQL.csproj"/>
-    <ProjectReference Include="..\Conways.GameOfLife.ServiceDefaults\Conways.GameOfLife.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Conways.GameOfLife.ServiceDefaults\Conways.GameOfLife.ServiceDefaults.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Http"/>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer"/>
-    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql"/>
     <PackageReference Include="FluentValidation.AspNetCore"/>
     <PackageReference Include="MediatR"/>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
@@ -21,7 +21,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Scalar.AspNetCore" />
+    <PackageReference Include="Scalar.AspNetCore"/>
   </ItemGroup>
 
   <ItemGroup>

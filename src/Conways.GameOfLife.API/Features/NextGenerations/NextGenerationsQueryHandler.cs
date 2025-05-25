@@ -18,7 +18,7 @@ public class NextGenerationsQueryHandler : IRequestHandler<NextGenerationsQuery,
         _context = context;
         _hashids = hashids;
     }
-    
+
     public async Task<NextGenerationsResponse> Handle(NextGenerationsQuery request, CancellationToken cancellationToken)
     {
         var boardId = _hashids.DecodeLong(request.BoardId)[0];
@@ -34,18 +34,18 @@ public class NextGenerationsQueryHandler : IRequestHandler<NextGenerationsQuery,
         }
 
         var stable = false;
-        
+
         foreach (var generation in Enumerable.Range(0, request.Generations))
         {
             var nextGeneration = board.NextGeneration();
 
             stable = board.HasReachedStableState(nextGeneration);
-            
+
             board.AddGeneration(generation + 1, nextGeneration);
         }
-        
+
         return new NextGenerationsResponse(
-            request.BoardId, 
+            request.BoardId,
             stable,
             board.Generations.Select(gen => new NextGenerationModel(gen.Number, gen.ToMatrix()))
         );

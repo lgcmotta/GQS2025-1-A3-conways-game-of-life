@@ -57,6 +57,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. API", "2. API", "{F3E9AB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.GameOfLife.ServiceDefaults", "src\Conways.GameOfLife.ServiceDefaults\Conways.GameOfLife.ServiceDefaults.csproj", "{C7F06B77-F1CC-47F4-B67D-10840416F9FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{3FE6B40C-5E4F-44D9-952D-9456C1A293C6}"
+	ProjectSection(SolutionItems) = preProject
+		.vscode\launch.json = .vscode\launch.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +84,7 @@ Global
 		{CE05B38E-EA36-445D-97B8-BC24B87C953E} = {F3E9AB37-6274-4933-9334-356E9030B94F}
 		{7DED051D-B336-4C32-9ECD-A034321A9D40} = {1F02AA9F-62AD-40D9-BD42-451C4E94CE31}
 		{C7F06B77-F1CC-47F4-B67D-10840416F9FC} = {1F02AA9F-62AD-40D9-BD42-451C4E94CE31}
+		{3FE6B40C-5E4F-44D9-952D-9456C1A293C6} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C419FB97-4442-4D28-A62D-16F25FFC1220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

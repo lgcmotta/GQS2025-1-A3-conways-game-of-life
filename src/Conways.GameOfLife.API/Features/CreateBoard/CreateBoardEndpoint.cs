@@ -12,7 +12,7 @@ public static class CreateBoardEndpoint
     {
         var response = await mediator.Send(command, cancellationToken)
             .ConfigureAwait(continueOnCapturedContext: false);
-        
+
         return Results.Ok(response);
     }
 }

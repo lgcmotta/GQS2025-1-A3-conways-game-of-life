@@ -1,3 +1,5 @@
 namespace Conways.GameOfLife.Domain.Core;
 
-public interface IEntity { }
+public interface IEntity
+{
+}

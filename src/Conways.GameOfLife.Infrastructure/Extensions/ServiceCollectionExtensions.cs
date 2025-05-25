@@ -11,11 +11,11 @@ public static class ServiceCollectionExtensions
         var salt = configuration.GetValue<string>("HashIds:Salt");
 
         var minHashLength = configuration.GetValue<int>("HashIds:MinHashLength");
-        
+
         ArgumentException.ThrowIfNullOrWhiteSpace(salt);
 
         services.AddSingleton<IHashids>(new Hashids(salt, minHashLength));
-        
+
         return services;
     }
 }

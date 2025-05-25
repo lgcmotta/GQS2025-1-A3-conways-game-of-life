@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/Conways.GameOfLife.API/Conways.GameOfLife.API.csproj",
+      "launchConfigurationId": "http"
+    },
+    {
+      "name": "Debug (Aspire)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/Conways.GameOfLife.AppHost/Conways.GameOfLife.AppHost.csproj",
+      "launchConfigurationId": "http"
+    }
+  ]
+}

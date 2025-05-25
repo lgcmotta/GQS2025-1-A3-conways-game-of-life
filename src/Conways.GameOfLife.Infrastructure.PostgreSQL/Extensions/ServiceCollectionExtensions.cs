@@ -33,10 +33,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<TDbContext>((provider, builder) =>
         {
-            builder.UseNpgsql(connectionString, pgsql =>
-            {
-                pgsql.EnableRetryOnFailure(retries);
-            });
+            builder.UseNpgsql(connectionString, pgsql => { pgsql.EnableRetryOnFailure(retries); });
 
             if (!useInterceptors) return;
 

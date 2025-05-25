@@ -4,30 +4,31 @@ namespace Conways.GameOfLife.Domain;
 
 public sealed class Generation : IEntity
 {
-    private readonly bool[,] _value = new bool[3,3];
-    
+    private readonly bool[,] _value = new bool[3, 3];
+
     public Generation(bool[,] value) : this()
     {
         ArgumentNullException.ThrowIfNull(value);
-        
+
         _value = value;
     }
-    
+
     private Generation()
-    { }
+    {
+    }
 
     public Generation(int rows, int columns)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(rows);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(columns);
-        
+
         _value = new bool[rows, columns];
     }
 
     public long Number { get; private set; }
 
     public bool Stable { get; private set; }
-    
+
     public override bool Equals(object? obj)
     {
         return ReferenceEquals(this, obj) || obj is Generation other && Equals(other);
@@ -49,13 +50,13 @@ public sealed class Generation : IEntity
         {
             return false;
         }
-        
-        if (left.GetRows() != right.GetRows() || 
+
+        if (left.GetRows() != right.GetRows() ||
             left.GetColumns() != right.GetColumns())
         {
             return false;
         }
-        
+
         for (var row = 0; row < left.GetRows(); row++)
         {
             for (var column = 0; column < left.GetColumns(); column++)
@@ -69,13 +70,13 @@ public sealed class Generation : IEntity
 
         return true;
     }
-    
+
     public static bool operator !=(Generation? left, Generation? right) => !(left == right);
-    
+
     public static implicit operator bool[,](Generation generation) => generation._value;
 
     public static implicit operator Generation(bool[,] value) => new(value);
-    
+
     public bool this[int row, int column]
     {
         get => _value[row, column];
@@ -89,7 +90,7 @@ public sealed class Generation : IEntity
     internal void DefineGenerationNumber(long generation) => Number = generation;
 
     internal void StabilizeGeneration() => Stable = true;
-    
+
     internal int CountLiveNeighbors(int row, int column)
     {
         var rows = GetRows();
@@ -113,7 +114,7 @@ public sealed class Generation : IEntity
                 {
                     continue;
                 }
-                
+
                 if (_value[neighborRow, neighborColumn])
                 {
                     liveNeighbors++;
@@ -128,7 +129,7 @@ public sealed class Generation : IEntity
     {
         return _value == nextGeneration;
     }
-    
+
     private bool Equals(Generation other)
     {
         return _value.Equals(other._value);
