@@ -4,7 +4,7 @@ public class BoardTests
 {
     public static TheoryData<bool[,]> GetInvalidArgumentsForBoardConstructor()
     {
-        return new TheoryData<bool[,]> { new bool[0, 1], new bool[1, 0] };
+        return [new bool[0, 1], new bool[1, 0]];
     }
 
     [Theory]

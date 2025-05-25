@@ -2,14 +2,14 @@ namespace Conways.GameOfLife.Domain.UnitTests;
 
 public class GenerationTests
 {
-    public static TheoryData<Generation, Generation, bool> GetBoardGenerationsForEqualityOperatorGuardClauses()
+    public static TheoryData<bool[,], bool[,], bool> GetBoardGenerationsForEqualityOperatorGuardClauses()
     {
         var referenceGeneration = new Generation(new[,]
         {
             { true, true, false }, { false, false, false }, { false, false, false }
         });
 
-        return new TheoryData<Generation, Generation, bool>
+        return new TheoryData<bool[,], bool[,], bool>
         {
             { referenceGeneration, referenceGeneration, true },
             { referenceGeneration, referenceGeneration, true },
@@ -27,13 +27,13 @@ public class GenerationTests
         };
     }
 
-    public static TheoryData<bool[,], (int, int), int> GetBoardGenerationsForCountLiveNeighbors()
+    public static TheoryData<bool[,], int, int, int> GetBoardGenerationsForCountLiveNeighbors()
     {
-        return new TheoryData<bool[,], (int, int), int>
+        return new TheoryData<bool[,], int, int, int>
         {
-            { new[,] { { true, true, false }, { false, true, false }, { false, false, false } }, (0, 0), 2 },
-            { new[,] { { false, false, false }, { false, true, false }, { false, false, false } }, (1, 1), 0 },
-            { new[,] { { false, false, false }, { false, true, false }, { true, false, false } }, (2, 0), 1 }
+            { new[,] { { true, true, false }, { false, true, false }, { false, false, false } }, 0, 0, 2 },
+            { new[,] { { false, false, false }, { false, true, false }, { false, false, false } }, 1, 1, 0 },
+            { new[,] { { false, false, false }, { false, true, false }, { true, false, false } }, 2, 0, 1 }
         };
     }
 
@@ -72,9 +72,12 @@ public class GenerationTests
 
     [Theory]
     [MemberData(nameof(GetBoardGenerationsForEqualityOperatorGuardClauses))]
-    public void EqualityOperator_WhenComparingGenerations_ShouldValidateGuardClauses(Generation? left,
-        Generation? right, bool expected)
+    public void EqualityOperator_WhenComparingGenerations_ShouldValidateGuardClauses(bool[,]? leftGrid, bool[,]? rightGrid, bool expected)
     {
+        // Arrange
+        var left  = leftGrid  is null ? null : new Generation(leftGrid);
+        var right = rightGrid is null ? null : new Generation(rightGrid);
+
         // Act
         var equal = left == right;
 
@@ -165,12 +168,10 @@ public class GenerationTests
 
     [Theory]
     [MemberData(nameof(GetBoardGenerationsForCountLiveNeighbors))]
-    public void CountLiveNeighbors_WhenBoardIsValid_ShouldReturnCorrectCount(bool[,] firstGeneration,
-        (int, int) coordinates, int expected)
+    public void CountLiveNeighbors_WhenBoardIsValid_ShouldReturnCorrectCount(bool[,] firstGeneration, int row, int column, int expected)
     {
         // Arrange
         var generation = new Generation(firstGeneration);
-        var (row, column) = coordinates;
 
         // Act
         var liveNeighbors = generation.CountLiveNeighbors(row, column);
