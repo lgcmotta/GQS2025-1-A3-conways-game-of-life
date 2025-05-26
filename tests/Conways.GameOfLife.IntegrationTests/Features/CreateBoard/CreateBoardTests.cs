@@ -43,7 +43,7 @@ public class CreateBoardTests
             await mediator.Send(new CreateBoardCommand(firstGeneration), TestContext.Current.CancellationToken);
 
         // Assert
-        await Assert.ThrowsAsync<ValidationFailedException>(SendCommand);
+        await Assert.ThrowsAsync<ValidationException>(SendCommand);
     }
 
     [Fact]
@@ -52,19 +52,18 @@ public class CreateBoardTests
         // Arrange
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
+            AllowAutoRedirect = false,
+            BaseAddress = _factory.Server.BaseAddress
         });
 
         var firstGeneration = new bool[][] { [false, true, false], [true, true, false], [false, false, false] };
 
-        var jsonString = JsonSerializer.Serialize(new CreateBoardCommand(firstGeneration));
+        var content = JsonContent.Create(new CreateBoardCommand(firstGeneration), new MediaTypeHeaderValue(MediaTypeNames.Application.Json, "utf-8"), JsonSerializerOptions.Web);
 
         // Act
-        var response = await client.PostAsync("/api/v1/boards",
-            new StringContent(jsonString, Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken);
+        var response = await client.PostAsync("/api/v1/boards", content, TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<CreateBoardResponse>(
-            cancellationToken: TestContext.Current.CancellationToken);
+        var body = await response.Content.ReadFromJsonAsync<CreateBoardResponse>(cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         body.Should().NotBeNull();

@@ -48,7 +48,7 @@ public class NextGenerationsTests
             TestContext.Current.CancellationToken);
 
         // Assert
-        await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
+        await Assert.ThrowsAsync<ValidationException>(RequestQuery);
     }
 
     [Fact]
@@ -147,12 +147,12 @@ public class NextGenerationsTests
         var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/{5}",
             TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(
+        var body = await response.Content.ReadFromJsonAsync<TracedProblemDetails>(
             cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         body.Should().NotBeNull();
-        body.Errors.Should().Contain($"Board with Id '{boardId}' was not found");
+        body.Detail.Should().Contain($"Board with Id '{boardId}' was not found");
     }
 }

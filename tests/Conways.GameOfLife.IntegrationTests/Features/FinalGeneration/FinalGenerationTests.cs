@@ -48,7 +48,7 @@ public class FinalGenerationTests
             TestContext.Current.CancellationToken);
 
         // Assert
-        await Assert.ThrowsAsync<ValidationFailedException>(RequestQuery);
+        await Assert.ThrowsAsync<ValidationException>(RequestQuery);
     }
 
     [Fact]
@@ -240,13 +240,12 @@ public class FinalGenerationTests
         var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final?maxAttempts={maxAttempts}",
             TestContext.Current.CancellationToken);
 
-        var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(
+        var body = await response.Content.ReadFromJsonAsync<TracedProblemDetails>(
             cancellationToken: TestContext.Current.CancellationToken);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
         body.Should().NotBeNull();
-        body.Errors.Should()
-            .Contain($"Board with id '{boardId}' failed to reach stable state after {maxAttempts} attempts");
+        body.Detail.Should().Be($"Board with id '{boardId}' failed to reach stable state after {maxAttempts} attempts");
     }
 }
