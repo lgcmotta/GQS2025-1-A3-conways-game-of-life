@@ -1,4 +1,3 @@
-using Conways.GameOfLife.API.Exceptions;
 using FluentValidation;
 using MediatR;
 
@@ -29,10 +28,6 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             return await next(cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
         }
 
-        var errors = validationFailures
-            .Select(failure =>
-                new ValidationFailedException.ValidationError(failure.PropertyName, failure.ErrorMessage));
-
-        throw new ValidationFailedException(errors);
+        throw new ValidationException(validationFailures);
     }
 }

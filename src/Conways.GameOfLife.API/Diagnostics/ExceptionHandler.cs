@@ -1,48 +1,35 @@
-using System.Net;
-using Conways.GameOfLife.API.Exceptions;
-using Conways.GameOfLife.API.Models;
+using Conways.GameOfLife.API.Extensions;
 using Conways.GameOfLife.Domain.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
+using System.Net.Mime;
 
 namespace Conways.GameOfLife.API.Diagnostics;
 
 public class ExceptionHandler : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
-        CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext context,
+        Exception exception,
+        CancellationToken cancellationToken = default)
     {
+        var instance = context.Request.Path.Value ?? string.Empty;
+
         var response = exception switch
         {
-            ArgumentNullException or ArgumentException or ArgumentOutOfRangeException => new
-            {
-                StatusCode = HttpStatusCode.BadRequest,
-                Content = new ErrorResponse(["Bad input when processing request"])
-            },
-            ValidationFailedException validationException => new
-            {
-                StatusCode = HttpStatusCode.BadRequest,
-                Content = new ErrorResponse(validationException.Errors
-                    .Select(error => $"'{error.Property}' {error.ErrorMessage}").ToArray())
-            },
-            BoardNotFoundException notFoundException => new
-            {
-                StatusCode = HttpStatusCode.NotFound, Content = new ErrorResponse([notFoundException.Message])
-            },
-            UnstableBoardException unstableBoardException => new
-            {
-                StatusCode = HttpStatusCode.UnprocessableEntity,
-                Content = new ErrorResponse([unstableBoardException.Message])
-            },
-            _ => new
-            {
-                StatusCode = HttpStatusCode.InternalServerError,
-                Content = new ErrorResponse(["Application failed to process request, please contact the support"])
-            }
+            ArgumentNullException e => e.ToProblemDetails(instance),
+            ArgumentOutOfRangeException e => e.ToProblemDetails(instance),
+            ArgumentException e => e.ToProblemDetails(instance),
+            ValidationException e => e.ToProblemDetails(instance),
+            BoardNotFoundException e => e.ToProblemDetails(instance),
+            UnstableBoardException e => e.ToProblemDetails(instance),
+            _ => exception.ToProblemDetails(instance)
         };
 
-        httpContext.Response.StatusCode = (int)response.StatusCode;
+        context.Response.StatusCode = response.Status ?? StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = MediaTypeNames.Application.ProblemJson;
 
-        await httpContext.Response.WriteAsJsonAsync(response.Content, cancellationToken)
+        await context.Response.WriteAsJsonAsync(response, cancellationToken)
             .ConfigureAwait(continueOnCapturedContext: false);
 
         return true;
