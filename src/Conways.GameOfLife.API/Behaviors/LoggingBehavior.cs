@@ -25,24 +25,17 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
         try
         {
-            _logger.LogInformation(
-                "[{Behavior}] - Handling request of type {RequestType}",
-                behaviorName, requestType);
+            _logger.LogInformation("[{Behavior}] - Handling request of type {RequestType}", behaviorName, requestType);
 
             var response = await next(cancellationToken).ConfigureAwait(false);
 
-            _logger.LogInformation(
-                "[{Behavior}] - Request of type {RequestType} handled successfully",
-                behaviorName, requestType);
+            _logger.LogInformation("[{Behavior}] - Request of type {RequestType} handled successfully", behaviorName, requestType);
 
             return response;
         }
         catch (Exception exception)
         {
-            _logger.LogError(
-                exception,
-                "[{Behavior}] - An exception occurred while handling request of type {RequestType}",
-                behaviorName, requestType);
+            _logger.LogError(exception, message: "[{Behavior}] - An exception occurred while handling request of type {RequestType}", behaviorName, requestType);
 
             throw;
         }
