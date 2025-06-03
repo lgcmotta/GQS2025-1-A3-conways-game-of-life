@@ -1,7 +1,8 @@
+using Conways.GameOfLife.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Conways.GameOfLife.Infrastructure.PostgreSQL.Extensions;
+namespace Conways.GameOfLife.Infrastructure.Extensions;
 
 public static class ServiceProviderExtensions
 {

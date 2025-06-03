@@ -1,3 +1,5 @@
+using Conways.GameOfLife.Infrastructure.Persistence;
+
 namespace Conways.GameOfLife.IntegrationTests.Features.NextGenerations;
 
 public class NextGenerationsTests

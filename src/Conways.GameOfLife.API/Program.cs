@@ -7,7 +7,6 @@ using Conways.GameOfLife.API.Features.NextGeneration;
 using Conways.GameOfLife.API.Features.NextGenerations;
 using Conways.GameOfLife.API.Middlewares;
 using Conways.GameOfLife.Infrastructure.Extensions;
-using Conways.GameOfLife.Infrastructure.PostgreSQL.Extensions;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +20,6 @@ builder.Services
     .AddBoardDbContexts(builder.Configuration)
     .AddHashIds(builder.Configuration)
     .AddCQRS()
-    .AddFluentValidators()
     .AddExceptionHandler<ExceptionHandler>()
     .AddTransient<ExceptionMiddleware>()
     .AddApiVersioning(options =>

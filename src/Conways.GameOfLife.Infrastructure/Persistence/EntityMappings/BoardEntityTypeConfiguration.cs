@@ -2,7 +2,7 @@ using Conways.GameOfLife.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Conways.GameOfLife.Infrastructure.PostgreSQL.Configurations;
+namespace Conways.GameOfLife.Infrastructure.Persistence.EntityMappings;
 
 public class BoardEntityTypeConfiguration : IEntityTypeConfiguration<Board>
 {

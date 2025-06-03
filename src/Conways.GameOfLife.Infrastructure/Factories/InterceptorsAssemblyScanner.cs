@@ -1,21 +1,19 @@
-using System.Reflection;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
-namespace Conways.GameOfLife.Infrastructure.PostgreSQL.Interceptors;
+namespace Conways.GameOfLife.Infrastructure.Factories;
 
-public static class InterceptorsAssemblyScanner
+internal static class InterceptorsAssemblyScanner
 {
-    public static IEnumerable<IInterceptor> Scan(
-        IServiceProvider? serviceProvider = null,
-        params Assembly[] assemblies)
+    internal static IEnumerable<IInterceptor> Scan(IServiceProvider? serviceProvider = null, params Assembly[] assemblies)
     {
         if (assemblies.Length == 0)
         {
             return [];
         }
 
-        return assemblies
+        return [.. assemblies
             .Distinct()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => type is { IsClass: true, IsAbstract: false } &&
@@ -41,6 +39,6 @@ public static class InterceptorsAssemblyScanner
                 return instance;
             })
             .Cast<IInterceptor>()
-            .ToArray();
+        ];
     }
 }

@@ -1,28 +1,29 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Conways.GameOfLife.Infrastructure.Factories;
 
-public static class ConfigurationFactory
+internal static class ConfigurationFactory
 {
-    public static IConfiguration CreateConfiguration()
+    internal static IConfiguration CreateConfiguration(string? userSecretsId = null)
     {
-        var configurationBuilder = new ConfigurationBuilder();
-
-        configurationBuilder.AddJsonFile("appsettings.json");
-
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+        var builder = new ConfigurationBuilder();
+
+        builder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
 
         if (!string.IsNullOrWhiteSpace(environment))
         {
-            configurationBuilder.AddJsonFile(
-                path: $"appsettings.{environment}.json",
-                optional: true,
-                reloadOnChange: true
-            );
+            builder.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: false);
         }
 
-        configurationBuilder.AddEnvironmentVariables();
+        if (!string.IsNullOrWhiteSpace(userSecretsId))
+        {
+            builder.AddUserSecrets(userSecretsId);
+        }
 
-        return configurationBuilder.Build();
+        builder.AddEnvironmentVariables();
+
+        return builder.Build();
     }
 }

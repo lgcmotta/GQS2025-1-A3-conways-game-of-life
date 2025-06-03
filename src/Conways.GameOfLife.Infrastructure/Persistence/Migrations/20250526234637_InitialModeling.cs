@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Conways.GameOfLife.Infrastructure.PostgreSQL.Migrations
+namespace Conways.GameOfLife.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTablesStructure : Migration
+    public partial class InitialModeling : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
