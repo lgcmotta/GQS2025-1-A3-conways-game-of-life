@@ -1,8 +1,8 @@
-using System.Reflection;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
-namespace Conways.GameOfLife.Infrastructure.PostgreSQL.Interceptors;
+namespace Conways.GameOfLife.Infrastructure.Persistence.Interceptors;
 
 public static class InterceptorsAssemblyScanner
 {
@@ -15,7 +15,7 @@ public static class InterceptorsAssemblyScanner
             return [];
         }
 
-        return assemblies
+        return [.. assemblies
             .Distinct()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => type is { IsClass: true, IsAbstract: false } &&
@@ -41,6 +41,6 @@ public static class InterceptorsAssemblyScanner
                 return instance;
             })
             .Cast<IInterceptor>()
-            .ToArray();
+        ];
     }
 }

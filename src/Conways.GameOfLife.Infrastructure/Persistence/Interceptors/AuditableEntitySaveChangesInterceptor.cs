@@ -2,9 +2,9 @@ using Conways.GameOfLife.Domain.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Conways.GameOfLife.Infrastructure.PostgreSQL.Interceptors;
+namespace Conways.GameOfLife.Infrastructure.Persistence.Interceptors;
 
-public class DateTimeSaveChangesInterceptor : SaveChangesInterceptor
+public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
@@ -21,8 +21,7 @@ public class DateTimeSaveChangesInterceptor : SaveChangesInterceptor
             {
                 entityEntry.Property<DateTime>("CreatedAt").CurrentValue = DateTime.UtcNow;
 
-                if (entityEntry.Properties.Any(propertyEntry =>
-                        propertyEntry.Metadata.IsShadowProperty() && propertyEntry.Metadata.Name == "UpdatedAt"))
+                if (entityEntry.Properties.Any(propertyEntry => propertyEntry.Metadata.IsShadowProperty() && propertyEntry.Metadata.Name == "UpdatedAt"))
                 {
                     entityEntry.Property<DateTime?>("UpdatedAt").CurrentValue = null;
                 }

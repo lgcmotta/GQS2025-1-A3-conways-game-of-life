@@ -2,10 +2,15 @@
 
   <ItemGroup>
     <PackageReference Include="Hashids.net"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json"/>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+    <PackageReference Include="System.CommandLine" />
   </ItemGroup>
 
   <ItemGroup>

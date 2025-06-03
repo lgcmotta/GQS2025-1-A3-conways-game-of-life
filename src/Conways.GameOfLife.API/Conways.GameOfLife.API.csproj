@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conways.GameOfLife.Infrastructure.PostgreSQL\Conways.GameOfLife.Infrastructure.PostgreSQL.csproj"/>
+    <ProjectReference Include="..\Conways.GameOfLife.Infrastructure\Conways.GameOfLife.Infrastructure.csproj" />
     <ProjectReference Include="..\Conways.GameOfLife.ServiceDefaults\Conways.GameOfLife.ServiceDefaults.csproj"/>
   </ItemGroup>
 

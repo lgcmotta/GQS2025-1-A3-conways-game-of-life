@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Conways.GameOfLife.Infrastructure.PostgreSQL;
+namespace Conways.GameOfLife.Infrastructure.Persistence;
 
 public sealed class BoardDbContextReadOnly : DbContext
 {

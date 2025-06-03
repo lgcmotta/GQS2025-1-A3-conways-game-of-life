@@ -1,7 +1,8 @@
 using Conways.GameOfLife.Domain;
 using Conways.GameOfLife.Domain.Exceptions;
 using Conways.GameOfLife.Infrastructure.Extensions;
-using Conways.GameOfLife.Infrastructure.PostgreSQL;
+using Conways.GameOfLife.Infrastructure;
+using Conways.GameOfLife.Infrastructure.Persistence;
 using HashidsNet;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

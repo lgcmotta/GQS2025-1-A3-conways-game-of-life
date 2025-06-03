@@ -1,3 +1,6 @@
+using Conways.GameOfLife.Infrastructure.Persistence;
+using Conways.GameOfLife.Infrastructure.Persistence.Interceptors;
+
 [assembly: AssemblyFixture(typeof(ConwaysGameOfLifeWebApplicationFactory))]
 
 namespace Conways.GameOfLife.IntegrationTests.Factories;
