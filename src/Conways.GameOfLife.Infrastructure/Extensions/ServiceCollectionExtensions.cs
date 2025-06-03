@@ -1,6 +1,5 @@
+using Conways.GameOfLife.Infrastructure.Factories;
 using Conways.GameOfLife.Infrastructure.Persistence;
-using Conways.GameOfLife.Infrastructure.Persistence.Interceptors;
-using System.Diagnostics.CodeAnalysis;
 using HashidsNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Conways.GameOfLife.Infrastructure.Extensions;
 
-[ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddHashIds(this IServiceCollection services, IConfiguration configuration)
@@ -48,7 +46,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<TDbContext>((provider, builder) =>
         {
-            builder.UseNpgsql(connectionString, pgsql => { pgsql.EnableRetryOnFailure(retries); });
+            builder.UseNpgsql(connectionString, pgsql => pgsql.EnableRetryOnFailure(retries));
 
             if (!useInterceptors) return;
 

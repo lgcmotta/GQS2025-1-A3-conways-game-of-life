@@ -4,7 +4,7 @@ namespace Conways.GameOfLife.Infrastructure.Extensions;
 
 public static class MatrixExtensions
 {
-    public static T[,] ToMultiArray<T>(this T[][] array)
+    public static T[,] ToTwoDimensionalArray<T>(this T[][] array)
     {
         var rows = array.Length;
 

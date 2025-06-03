@@ -2,13 +2,11 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Conways.GameOfLife.Infrastructure.Persistence.Interceptors;
+namespace Conways.GameOfLife.Infrastructure.Factories;
 
-public static class InterceptorsAssemblyScanner
+internal static class InterceptorsAssemblyScanner
 {
-    public static IEnumerable<IInterceptor> Scan(
-        IServiceProvider? serviceProvider = null,
-        params Assembly[] assemblies)
+    internal static IEnumerable<IInterceptor> Scan(IServiceProvider? serviceProvider = null, params Assembly[] assemblies)
     {
         if (assemblies.Length == 0)
         {

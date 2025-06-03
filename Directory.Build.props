@@ -27,4 +27,9 @@
       <_Parameter1>Conways.GameOfLife.Domain.UnitTests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Conways.GameOfLife.IntegrationTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

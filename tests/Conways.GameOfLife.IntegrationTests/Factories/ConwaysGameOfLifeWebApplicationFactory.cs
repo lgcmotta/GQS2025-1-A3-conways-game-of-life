@@ -1,3 +1,4 @@
+using Conways.GameOfLife.Infrastructure.Factories;
 using Conways.GameOfLife.Infrastructure.Persistence;
 using Conways.GameOfLife.Infrastructure.Persistence.Interceptors;
 
@@ -22,12 +23,18 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
 
         var context = scope.ServiceProvider.GetRequiredService<BoardDbContext>();
 
-        await context.Database.MigrateAsync(TestContext.Current.CancellationToken);
+        await context.Database.MigrateAsync(TestContext.Current.CancellationToken)
+            .ConfigureAwait(continueOnCapturedContext: false);
     }
 
-#pragma warning disable CA1816
-    public new async ValueTask DisposeAsync() => await base.DisposeAsync();
-#pragma warning restore CA1816
+    public new async ValueTask DisposeAsync()
+    {
+        await _container.DisposeAsync();
+
+        await base.DisposeAsync();
+
+        GC.SuppressFinalize(this);
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
