@@ -8,6 +8,7 @@ WORKDIR /app
 EXPOSE 8080
 
 EXPOSE 8081
+
 ########################################
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
@@ -23,13 +24,20 @@ COPY ["Directory.Build.props", "Directory.Build.props"]
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 
 RUN dotnet restore Conways.GameOfLife.API/Conways.GameOfLife.API.csproj
-RUN dotnet build Conways.GameOfLife.API/Conways.GameOfLife.API.csproj -c "$BUILD_CONFIGURATION" -o /app/build
+RUN dotnet build Conways.GameOfLife.API/Conways.GameOfLife.API.csproj \
+  -c "$BUILD_CONFIGURATION" \
+  -o /app/build
+
 ########################################
 FROM build AS publish
 
 ARG BUILD_CONFIGURATION=Release
 
-RUN dotnet publish Conways.GameOfLife.API/Conways.GameOfLife.API.csproj -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
+RUN dotnet publish Conways.GameOfLife.API/Conways.GameOfLife.API.csproj \
+  -c "$BUILD_CONFIGURATION" \
+  -o /app/publish \
+  /p:UseAppHost=false
+
 ########################################
 FROM base AS final
 
