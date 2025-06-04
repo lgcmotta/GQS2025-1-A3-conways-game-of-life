@@ -57,10 +57,6 @@ api.MapCreateBoardEndpoint(v1)
     .MapNextGenerationsEndpoint(v1)
     .MapFinalGenerationEndpoint(v1);
 
-await app.Services
-    .MigrateDatabaseAsync()
-    .ConfigureAwait(continueOnCapturedContext: false);
-
 await app.RunAsync()
     .ConfigureAwait(continueOnCapturedContext: false);
 
