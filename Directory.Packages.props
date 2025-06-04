@@ -5,7 +5,6 @@
   <ItemGroup>
     <PackageVersion Include="Asp.Versioning.Abstractions" Version="8.1.0" />
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.2.1" />
-    <PackageVersion Include="Aspire.Hosting.Testing" Version="9.2.1" />
     <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="9.2.1" />

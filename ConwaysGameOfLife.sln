@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
 		global.json = global.json
+		build.ps1 = build.ps1
+		build.sh = build.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{229E1888-0DAC-4F7C-A9D6-9AF3F94C293D}"
@@ -60,6 +62,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{3FE6
 		.vscode\launch.json = .vscode\launch.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".scripts", ".scripts", "{62EACD70-6BF0-4634-B7AE-2BAB5F47A24D}"
+	ProjectSection(SolutionItems) = preProject
+		.scripts\build.cake = .scripts\build.cake
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{0908BCD5-E15B-4566-AB24-74777ED2E02E}"
+	ProjectSection(SolutionItems) = preProject
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +94,8 @@ Global
 		{7DED051D-B336-4C32-9ECD-A034321A9D40} = {1F02AA9F-62AD-40D9-BD42-451C4E94CE31}
 		{C7F06B77-F1CC-47F4-B67D-10840416F9FC} = {1F02AA9F-62AD-40D9-BD42-451C4E94CE31}
 		{3FE6B40C-5E4F-44D9-952D-9456C1A293C6} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
+		{62EACD70-6BF0-4634-B7AE-2BAB5F47A24D} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
+		{0908BCD5-E15B-4566-AB24-74777ED2E02E} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C419FB97-4442-4D28-A62D-16F25FFC1220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
