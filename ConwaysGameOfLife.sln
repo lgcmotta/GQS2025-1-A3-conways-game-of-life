@@ -72,8 +72,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{0908
 		.config\dotnet-tools.json = .config\dotnet-tools.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.GameOfLife.AppHost.IntegrationTests", "tests\Conways.GameOfLife.AppHost.IntegrationTests\Conways.GameOfLife.AppHost.IntegrationTests.csproj", "{F20263ED-2B2B-4C9A-9F7D-D2C65FA143F8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,7 +96,6 @@ Global
 		{3FE6B40C-5E4F-44D9-952D-9456C1A293C6} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
 		{62EACD70-6BF0-4634-B7AE-2BAB5F47A24D} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
 		{0908BCD5-E15B-4566-AB24-74777ED2E02E} = {F06A9023-6B30-49F4-800F-7D0962AF983C}
-		{F20263ED-2B2B-4C9A-9F7D-D2C65FA143F8} = {BA3F4EF3-3ABB-46CF-8A45-FD8F2B3FE819}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C419FB97-4442-4D28-A62D-16F25FFC1220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -129,9 +126,5 @@ Global
 		{C7F06B77-F1CC-47F4-B67D-10840416F9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7F06B77-F1CC-47F4-B67D-10840416F9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7F06B77-F1CC-47F4-B67D-10840416F9FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F20263ED-2B2B-4C9A-9F7D-D2C65FA143F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F20263ED-2B2B-4C9A-9F7D-D2C65FA143F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F20263ED-2B2B-4C9A-9F7D-D2C65FA143F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F20263ED-2B2B-4C9A-9F7D-D2C65FA143F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
