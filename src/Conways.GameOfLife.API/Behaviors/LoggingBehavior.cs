@@ -1,6 +1,5 @@
 using Conways.GameOfLife.Infrastructure.Extensions;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace Conways.GameOfLife.API.Behaviors;
 
