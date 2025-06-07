@@ -1,0 +1,49 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="build.ps1" />
+    <File Path="build.sh" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.config/">
+    <File Path=".config/dotnet-tools.json" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/">
+    <File Path=".github/pull_request_template.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/ISSUE_TEMPLATE/">
+    <File Path=".github/ISSUE_TEMPLATE/simple-issue-task.md" />
+  </Folder>
+  <Folder Name="/Solution Items/.github/workflows/">
+    <File Path=".github/workflows/issue_notification.yml" />
+    <File Path=".github/workflows/pull_request.yml" />
+    <File Path=".github/workflows/push_image.yml" />
+    <File Path=".github/workflows/sonar_pull_request.yml" />
+    <File Path=".github/workflows/sonar_push.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/.scripts/">
+    <File Path=".scripts/build.cake" />
+  </Folder>
+  <Folder Name="/Solution Items/.vscode/">
+    <File Path=".vscode/launch.json" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/1. Aspire/">
+    <Project Path="src/Conways.GameOfLife.AppHost/Conways.GameOfLife.AppHost.csproj" />
+    <Project Path="src/Conways.GameOfLife.ServiceDefaults/Conways.GameOfLife.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/2. API/">
+    <Project Path="src/Conways.GameOfLife.API/Conways.GameOfLife.API.csproj" />
+    <Project Path="src/Conways.GameOfLife.Domain/Conways.GameOfLife.Domain.csproj" />
+    <Project Path="src/Conways.GameOfLife.Infrastructure/Conways.GameOfLife.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Conways.GameOfLife.Domain.UnitTests/Conways.GameOfLife.Domain.UnitTests.csproj" />
+    <Project Path="tests/Conways.GameOfLife.IntegrationTests/Conways.GameOfLife.IntegrationTests.csproj" />
+  </Folder>
+</Solution>
