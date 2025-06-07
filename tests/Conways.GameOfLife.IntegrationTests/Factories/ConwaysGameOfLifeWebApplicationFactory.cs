@@ -1,7 +1,3 @@
-using Conways.GameOfLife.Infrastructure.Factories;
-using Conways.GameOfLife.Infrastructure.Persistence;
-using Conways.GameOfLife.Infrastructure.Persistence.Interceptors;
-
 [assembly: AssemblyFixture(typeof(ConwaysGameOfLifeWebApplicationFactory))]
 
 namespace Conways.GameOfLife.IntegrationTests.Factories;
@@ -36,42 +32,20 @@ public class ConwaysGameOfLifeWebApplicationFactory : WebApplicationFactory<Prog
         GC.SuppressFinalize(this);
     }
 
+    public HttpClient CreateHttpClient() => CreateClient(new WebApplicationFactoryClientOptions
+    {
+        AllowAutoRedirect = false,
+        BaseAddress = Server.BaseAddress
+    });
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
         {
-            RemoveDbContextOptions<BoardDbContext>(services);
-
-            RemoveDbContextOptions<BoardDbContextReadOnly>(services);
-
             var connectionString = _container.GetConnectionString();
 
-            services.AddDbContext<BoardDbContext>((provider, optionsBuilder) =>
-            {
-                optionsBuilder.UseNpgsql(connectionString, pgsql => { pgsql.EnableRetryOnFailure(3); });
-
-                var interceptors = InterceptorsAssemblyScanner.Scan(provider, typeof(BoardDbContext).Assembly);
-
-                optionsBuilder.AddInterceptors(interceptors);
-            });
-
-            services.AddDbContext<BoardDbContextReadOnly>(optionsBuilder =>
-            {
-                optionsBuilder.UseNpgsql(connectionString, pgsql => { pgsql.EnableRetryOnFailure(3); });
-            });
+            services.AddDbContextForTestContainers<BoardDbContext>(connectionString, useInterceptors: true);
+            services.AddDbContextForTestContainers<BoardDbContextReadOnly>(connectionString);
         });
-    }
-
-    private static void RemoveDbContextOptions<TDbContext>(IServiceCollection services)
-        where TDbContext : DbContext
-    {
-        var serviceDescriptor =
-            services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(DbContextOptions<TDbContext>)
-            );
-
-        if (serviceDescriptor is not null)
-        {
-            services.Remove(serviceDescriptor);
-        }
     }
 }
