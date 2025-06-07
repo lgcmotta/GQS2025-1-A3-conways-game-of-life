@@ -1,5 +1,3 @@
-using Conways.GameOfLife.Infrastructure.Persistence;
-
 namespace Conways.GameOfLife.IntegrationTests.Features.FinalGeneration;
 
 public class FinalGenerationTests
@@ -160,10 +158,7 @@ public class FinalGenerationTests
 
         var boardId = await SeedBoard(firstGeneration);
 
-        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
-        });
+        var client = _factory.CreateHttpClient();
 
         // Act
         var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final?maxAttempts={maxAttempts}",
@@ -199,10 +194,7 @@ public class FinalGenerationTests
 
         var boardId = await SeedBoard(firstGeneration);
 
-        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
-        });
+        var client = _factory.CreateHttpClient();
 
         // Act
         var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final",
@@ -233,10 +225,7 @@ public class FinalGenerationTests
 
         var boardId = await SeedBoard(firstGeneration);
 
-        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
-        });
+        var client = _factory.CreateHttpClient();
 
         // Act
         var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/final?maxAttempts={maxAttempts}",

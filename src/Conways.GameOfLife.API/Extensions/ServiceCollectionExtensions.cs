@@ -1,11 +1,13 @@
+using Asp.Versioning;
 using Conways.GameOfLife.API.Behaviors;
-using Conways.GameOfLife.Infrastructure;
+using Conways.GameOfLife.API.Diagnostics;
+using Conways.GameOfLife.API.Middlewares;
 using Conways.GameOfLife.Infrastructure.Persistence;
 using FluentValidation;
 
 namespace Conways.GameOfLife.API.Extensions;
 
-public static class ServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
     internal static IServiceCollection AddCQRS(this IServiceCollection services)
     {
@@ -32,5 +34,29 @@ public static class ServiceCollectionExtensions
         services.AddHealthChecks().AddNpgSql(connectionString);
 
         return services;
+    }
+
+    internal static IServiceCollection AddApiVersioning(this IServiceCollection services, ApiVersion version)
+    {
+        services.AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+                options.DefaultApiVersion = version;
+            }).AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'V";
+                options.SubstituteApiVersionInUrl = true;
+            })
+            .EnableApiVersionBinding();
+
+        return services;
+    }
+
+    internal static IServiceCollection AddApiExceptionHandling(this IServiceCollection services)
+    {
+        return services.AddExceptionHandler<ExceptionHandler>()
+            .AddTransient<ExceptionMiddleware>();
     }
 }
