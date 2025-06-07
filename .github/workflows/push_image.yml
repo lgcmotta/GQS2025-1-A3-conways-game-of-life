@@ -3,7 +3,7 @@ name: Build and Publish Image to GitHub
 on:
   push:
     tags:
-      - "*.*.*"
+      - "v*.*.*"
 
 jobs:
   publish:
