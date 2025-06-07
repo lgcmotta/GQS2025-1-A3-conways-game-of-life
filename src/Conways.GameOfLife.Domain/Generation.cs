@@ -13,9 +13,7 @@ public sealed class Generation : IEntity
         _value = value;
     }
 
-    private Generation()
-    {
-    }
+    private Generation() { }
 
     public Generation(int rows, int columns)
     {

@@ -1,5 +1,3 @@
-using Conways.GameOfLife.Infrastructure.Persistence;
-
 namespace Conways.GameOfLife.IntegrationTests.Features.NextGeneration;
 
 public class NextGenerationTests
@@ -104,10 +102,7 @@ public class NextGenerationTests
 
         var boardId = await SeedBoard(firstGeneration);
 
-        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
-        });
+        var client = _factory.CreateHttpClient();
 
         // Act
         var response = await client.GetAsync($"/api/v1/boards/{boardId}/generations/next",
@@ -125,10 +120,7 @@ public class NextGenerationTests
     public async Task NextGeneration_WhenBoardDoesNotExistsRequestingUsingAPI_ShouldRespondNotFound()
     {
         // Arrange
-        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false, BaseAddress = _factory.Server.BaseAddress
-        });
+        var client = _factory.CreateHttpClient();
 
         using var scope = _factory.Services.CreateScope();
 

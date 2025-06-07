@@ -9,11 +9,11 @@ namespace Conways.GameOfLife.API.Diagnostics;
 public class ExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
-        HttpContext context,
+        HttpContext httpContext,
         Exception exception,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
-        var instance = context.Request.Path.Value ?? string.Empty;
+        var instance = httpContext.Request.Path.Value ?? string.Empty;
 
         var response = exception switch
         {
@@ -26,10 +26,10 @@ public class ExceptionHandler : IExceptionHandler
             _ => exception.ToProblemDetails(instance)
         };
 
-        context.Response.StatusCode = response.Status ?? StatusCodes.Status500InternalServerError;
-        context.Response.ContentType = MediaTypeNames.Application.ProblemJson;
+        httpContext.Response.StatusCode = response.Status ?? StatusCodes.Status500InternalServerError;
+        httpContext.Response.ContentType = MediaTypeNames.Application.ProblemJson;
 
-        await context.Response.WriteAsJsonAsync(response, cancellationToken)
+        await httpContext.Response.WriteAsJsonAsync(response, cancellationToken)
             .ConfigureAwait(continueOnCapturedContext: false);
 
         return true;

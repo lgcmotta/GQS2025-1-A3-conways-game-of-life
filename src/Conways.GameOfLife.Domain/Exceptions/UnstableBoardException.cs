@@ -1,9 +1,4 @@
 namespace Conways.GameOfLife.Domain.Exceptions;
 
-public class UnstableBoardException : Exception
-{
-    public UnstableBoardException(string boardId, int maxAttempts)
-        : base($"Board with id '{boardId}' failed to reach stable state after {maxAttempts} attempts")
-    {
-    }
-}
+public class UnstableBoardException(string boardId, int maxAttempts)
+    : Exception($"Board with id '{boardId}' failed to reach stable state after {maxAttempts} attempts");
