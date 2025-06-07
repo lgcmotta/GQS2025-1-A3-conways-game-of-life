@@ -1,9 +1,4 @@
 namespace Conways.GameOfLife.Domain.Exceptions;
 
-public class BoardNotFoundException : Exception
-{
-    public BoardNotFoundException(string boardId)
-        : base($"Board with Id '{boardId}' was not found")
-    {
-    }
-}
+public class BoardNotFoundException(string boardId)
+    : Exception($"Board with Id '{boardId}' was not found");
