@@ -26,7 +26,7 @@ var app = builder.Build();
 
 app.MapDefaultHealthChecks();
 app.MapOpenApi();
-app.MapScalarApiReference();
+app.MapOpenApiUI();
 app.UseMiddleware<ExceptionMiddleware>();
 
 var api = app.MapApiGroup(v1);
